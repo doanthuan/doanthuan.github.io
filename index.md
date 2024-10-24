@@ -40,7 +40,7 @@ table {
           <img src="/assets/hcl/hcl1.png"/>
         </td>
         <td width="75%">
-          <a href="/projects/hcl-solutions/">HCL Solution Usecases</a><br/>
+          <a href="/projects/hcl-solutions/">HCL Solution Catalog</a><br/>
             Gen AI Enabled Solutions at HCL: software development & testing, chatbot, agents
         </td>
     </tr>
