@@ -32,6 +32,13 @@ table {
       </tbody>
 </table>
 
+<p align="center">
+    <a href="mailto:doanvuthuan@gmail.com">Email</a> &nbsp;|&nbsp;
+    <a href="/assets/ThuanDoan_CV.pdf">CV</a> &nbsp;|&nbsp;
+    <a href="https://github.com/doanthuan">GitHub</a> &nbsp;|&nbsp;
+    <a href="https://www.linkedin.com/in/doan-thuan-16ab1a61/"> LinkedIn</a>
+</p>
+
 <h4>Recent Projects</h4>
 <table>
     <tbody>
@@ -121,3 +128,5 @@ table {
 - Image Generation & Editting
 - 3D Vision
 
+#### Publication:
+- Efficient Finetuning Large Language Models For Vietnamese Chatbot (first author) - [MAPR 2023](https://mapr.uit.edu.vn/list-accepted-papers). [Paper’s link](https://ieeexplore.ieee.org/document/10288647)
