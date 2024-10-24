@@ -57,7 +57,7 @@ The implementation of deep learning-based crack segmentation in transport infras
 
 <h3></h3>
 
-### Aerial Imagery dataset for fire detection: classification and segmentation using Unmanned Aerial Vehicle (UAV)
+### Wild fire classification and segmentation using Unmanned Aerial Vehicle (UAV)
 
 #### Title
 ![Image](/assets/flame_compressed.gif)
