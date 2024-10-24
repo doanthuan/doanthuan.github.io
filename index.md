@@ -15,11 +15,14 @@ table {
       <tbody><tr>
         <td width="67%" valign="middle">
         <p>
-          I am currently a Machine Learning Engineer at <a href="https://www.hcltech.com/"><strong>HCLTech</strong></a> in Ho Chi Minh City, Vietnam.
+          I am currently a Machine Learning Engineer at <a href="https://www.hcltech.com/">HCLTech</a> in Ho Chi Minh City, Vietnam, focusing on Generative AI and Large Language Models (LLMs).
         </p> 
         <p>
-           10 years in software engineering. 5 years in machine learning.
+          I have more than 10 years of experience working as a software engineer and 5 years in the machine learning and AI industry.
         </p>
+        <p>
+          I received my Bachelor’s degree from the <a href="https://en.hcmus.edu.vn/">University of Science</a> (HCMUS) in 2008 and my MSc degree from the <a href="https://en.uit.edu.vn/">University of Information Technology</a> (VNU-HCM) in 2023
+        </p> 
         </td>
         <td width="33%">
           <img src="/assets/profile.png" width="250" alt="headshot">
@@ -116,6 +119,5 @@ table {
 - [LLM Reasoning](https://rectangular-belly-696.notion.site/Reasoning-c0366abc562940b4b4d4934a1ac66d11)
 - [Multimodal](https://rectangular-belly-696.notion.site/Multimodel-9f5bc49350094bad86938d963736f2d7?pvs=4)
 - Image Generation & Editting
-- Deep Generative Models
-
+- 3D Vision
 
