@@ -1,0 +1,89 @@
+<style>
+
+.site-nav {
+  line-height: 10px;
+} 
+/* Remove as bolinhas do lado das listas */
+.menu .menu-list, .menu .sub-menu{
+  list-style: none;
+}
+/* Configura todos os links do nosso menu */
+.menu a{
+  color: #000;
+  text-decoration: none;
+  display: block;
+  cursor: pointer;
+  text-transform: uppercase;
+  font-size: 14px;
+  letter-spacing:0.2em;
+}
+/* Faz os <li>s ficarem na horizontal */
+.menu > .menu-list > li{
+  float: left;
+  position: relative;
+}
+/* Configura os links do menu principal */
+.menu > .menu-list > li > a {
+  padding: 10px;
+  margin: 0 5px;
+  min-width: 300px;
+}
+/* Configura o fundo do menu principal quando com mouse hover */
+/* .menu > .menu-list > li:hover a {
+  background: #444;
+} */
+/* Mostra o submenu no evento de mouse hover */
+.menu > .menu-list > li:hover > .sub-menu {
+  display: block;
+}
+/* Configura o estilo do submenu */
+.menu > .menu-list > li > .sub-menu {
+  position: absolute;
+  top: 20px;
+  left: -35px;
+  /* background: blue; */
+  min-width: 200px;
+  z-index: 1000;
+  display: none;
+}
+/* Configura os links do submenu */
+.menu > .menu-list > li > .sub-menu > li > a {
+ padding: 10px 20px;
+}
+/* Clearfix para o menu */
+.menu:after {
+  content: '.';
+  display: block;
+  clear: both;
+  visibility: hidden;
+  line-height: 0;
+  height: 0;
+}
+</style>
+
+<header class="site-header">
+  <div class="wrapper">
+    {%- assign default_paths = site.pages | map: "path" -%}
+    {%- assign page_paths = site.header_pages | default: default_paths -%}
+    {%- assign titles_size = site.pages | map: 'title' | join: '' | size -%}
+    <a class="site-title" rel="author" href="{{ "/" | relative_url }}">{{ site.title | escape }}</a>
+
+    {%- if titles_size > 0 -%}
+      <nav class="site-nav">
+        <div class="menu">
+          <ul class="menu-list">
+            <li>
+              <a href="#">Notes</a>
+               <ul class="sub-menu">
+                <li><a href="https://rectangular-belly-696.notion.site/LLM-d3d69b80de8347febf87ea66a04fb1ef?pvs=4">Large Language Model</a></li>
+                <li><a href="https://rectangular-belly-696.notion.site/Multimodel-9f5bc49350094bad86938d963736f2d7?pvs=74">Multimodal</a></li>
+                <li><a href="https://rectangular-belly-696.notion.site/ML-5154defb561d45f79a1d0dd9c75324f9?pvs=4">Machine Learning</a></li>
+              </ul>
+            </li>
+
+          </ul>
+        </div>
+      </nav>
+    {%- endif -%}
+  </div>
+</header>
