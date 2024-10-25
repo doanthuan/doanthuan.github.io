@@ -15,13 +15,13 @@ table {
       <tbody><tr>
         <td width="67%" valign="middle">
         <p>
-          I am currently a Machine Learning Engineer at <a href="https://www.hcltech.com/">HCLTech</a> in Ho Chi Minh City, Vietnam, focusing on Generative AI and Large Language Models (LLMs).
+          Currently working as a Machine Learning Engineer at <a href="https://www.hcltech.com/">HCLTech</a> in Ho Chi Minh City, Vietnam, with a focus on developing innovative solutions using Gen AI and LLMs.
         </p> 
         <p>
-          I have more than 10 years of experience working as a software engineer and 5 years in the machine learning and AI industry.
+          Over 10 years of software engineering experience, with 5 years specializing in machine learning and AI.
         </p>
         <p>
-          I received my Bachelor’s degree from the <a href="https://en.hcmus.edu.vn/">University of Science</a> (HCMUS) in 2008 and my MSc degree from the <a href="https://en.uit.edu.vn/">University of Information Technology</a> (VNU-HCM) in 2023
+          B.S. in Computer Science from <a href="https://en.hcmus.edu.vn/">University of Science</a> (HCMUS) in 2008, M.S. in Computer Science from <a href="https://en.uit.edu.vn/">University of Information Technology</a> (VNU-HCM) in 2023.
         </p> 
         </td>
         <td width="33%">
