@@ -13,7 +13,7 @@ table {
 
 <table width="100%" align="center" border="0" cellspacing="0" cellpadding="20">
       <tbody><tr>
-        <td width="67%" valign="middle">
+        <td width="70%" valign="middle">
         <p>
           Currently working as a Machine Learning Engineer at <a href="https://www.hcltech.com/">HCLTech</a> in Ho Chi Minh City, Vietnam, with a focus on developing innovative solutions using Gen AI and LLMs.
         </p> 
@@ -24,8 +24,8 @@ table {
           B.S. in Computer Science from <a href="https://en.hcmus.edu.vn/">University of Science</a> (HCMUS) in 2008, M.S. in Computer Science from <a href="https://en.uit.edu.vn/">University of Information Technology</a> (VNU-HCM) in 2023.
         </p> 
         </td>
-        <td width="33%">
-          <img src="/assets/profile.png" width="250" alt="headshot">
+        <td width="30%" valign="top">
+          <img src="/assets/profile.png" width="200" alt="headshot">
         </td>
       </tr>
 
