@@ -1,67 +1,5 @@
-<style>
-
-.site-nav {
-  line-height: 10px;
-} 
-/* Remove as bolinhas do lado das listas */
-.menu .menu-list, .menu .sub-menu{
-  list-style: none;
-}
-/* Configura todos os links do nosso menu */
-.menu a{
-  color: #000;
-  text-decoration: none;
-  display: block;
-  cursor: pointer;
-  text-transform: uppercase;
-  font-size: 14px;
-  letter-spacing:0.2em;
-}
-/* Faz os <li>s ficarem na horizontal */
-.menu > .menu-list > li{
-  float: left;
-  position: relative;
-}
-/* Configura os links do menu principal */
-.menu > .menu-list > li > a {
-  padding: 10px;
-  margin: 0 5px;
-  min-width: 300px;
-}
-/* Configura o fundo do menu principal quando com mouse hover */
-/* .menu > .menu-list > li:hover a {
-  background: #444;
-} */
-/* Mostra o submenu no evento de mouse hover */
-.menu > .menu-list > li:hover > .sub-menu {
-  display: block;
-}
-/* Configura o estilo do submenu */
-.menu > .menu-list > li > .sub-menu {
-  position: absolute;
-  top: 20px;
-  left: -35px;
-  /* background: blue; */
-  min-width: 200px;
-  z-index: 1000;
-  display: none;
-}
-/* Configura os links do submenu */
-.menu > .menu-list > li > .sub-menu > li > a {
- padding: 10px 20px;
-}
-/* Clearfix para o menu */
-.menu:after {
-  content: '.';
-  display: block;
-  clear: both;
-  visibility: hidden;
-  line-height: 0;
-  height: 0;
-}
-</style>
-
 <header class="site-header">
+
   <div class="wrapper">
     {%- assign default_paths = site.pages | map: "path" -%}
     {%- assign page_paths = site.header_pages | default: default_paths -%}
@@ -70,18 +8,17 @@
 
     {%- if titles_size > 0 -%}
       <nav class="site-nav">
-        <div class="menu">
-          <ul class="menu-list">
-            <li>
-              <a href="#">Notes</a>
-               <ul class="sub-menu">
-                <li><a href="https://rectangular-belly-696.notion.site/LLM-d3d69b80de8347febf87ea66a04fb1ef?pvs=4">Large Language Model</a></li>
-                <li><a href="https://rectangular-belly-696.notion.site/Multimodel-9f5bc49350094bad86938d963736f2d7?pvs=74">Multimodal</a></li>
-                <li><a href="https://rectangular-belly-696.notion.site/ML-5154defb561d45f79a1d0dd9c75324f9?pvs=4">Machine Learning</a></li>
-              </ul>
-            </li>
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
 
-          </ul>
+        <div class="trigger">
+          <a class="page-link" href="https://rectangular-belly-696.notion.site/Notes-12cd073dec5b80b6a3b6f9402651c829?pvs=4">Notes</a>
         </div>
       </nav>
     {%- endif -%}
