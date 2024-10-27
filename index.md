@@ -34,7 +34,7 @@ table {
 
 <p align="center">
     <a href="mailto:doanvuthuan@gmail.com">Email</a> &nbsp;|&nbsp;
-    <a href="/assets/ThuanDoan_CV.pdf">CV</a> &nbsp;|&nbsp;
+    <a href="/assets/Thuan_Doan_Resume.pdf">CV</a> &nbsp;|&nbsp;
     <a href="https://github.com/doanthuan">GitHub</a> &nbsp;|&nbsp;
     <a href="https://www.linkedin.com/in/doan-thuan-16ab1a61/"> LinkedIn</a>
 </p>
