@@ -15,7 +15,7 @@ table {
       <tbody><tr>
         <td width="70%" valign="middle">
         <p>
-          Currently working as a Machine Learning Engineer at <a href="https://www.hcltech.com/">HCLTech</a> in Ho Chi Minh City, Vietnam, with a focus on developing innovative solutions using Gen AI and LLMs.
+          Currently working as a Machine Learning Engineer with a focus on developing innovative solutions using Gen AI and LLMs.
         </p> 
         <p>
           Over 10 years of software engineering experience, with 5 years specializing in machine learning and AI.
@@ -39,7 +39,7 @@ table {
     <a href="https://www.linkedin.com/in/doan-thuan-16ab1a61/"> LinkedIn</a>
 </p>
 
-<h4>Recent Projects</h4>
+<h4>Projects</h4>
 <table>
     <tbody>
     <tr>
@@ -74,7 +74,7 @@ table {
           <img src="/assets/customer-assistant.png"/>
         </td>
         <td width="75%">
-          <a href="/projects/customer-assistant">Customer Support Assistant</a><br/>
+          <a href="/projects/customer-assistant">GruBot</a><br/>
             AI-Driven Voice Recognition and Rule-Based Chatbot System for Enhanced Customer Support
         </td>
     </tr>
@@ -83,7 +83,7 @@ table {
           <img src="/assets/viettelpay/viettel-pay.png">
         </td>
         <td width="75%">
-          <a href="/projects/viettel-pay">Viettel Pay</a><br/>
+          <a href="/projects/viettel-pay">ViettelPayFDS</a><br/>
           High-performance fraud detection system for real-time payment transactions in banks
         </td>
     </tr>
