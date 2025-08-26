@@ -1,16 +1,15 @@
 ---
 layout: page
-title: 
+title: Viettel Pay Fraud Detection System
 permalink: /projects/viettel-pay/
 ---
-<h3></h3>
 
 ## Viettel Pay FDS
 
 **Date:** 2021
 
-**Description:**
-The project aims to develop a high-performance fraud detection system for real-time payment transactions in banks. This system will enhance the bank's ability to identify suspicious activities, reduce false positives, and prevent fraudulent transactions, ensuring secure and reliable financial services.
+**Overview:**
+A production-grade, real-time fraud detection system for digital payments that combines deterministic rules with tree-based machine learning to flag suspicious transactions with low latency and fewer false positives. The solution strengthens protection while preserving customer experience across high-volume payment flows.
 
 ![Image](/assets/fds/gru-ads-overal.png)
 <p style="text-align:center;">GruADS</p>
@@ -23,10 +22,10 @@ The project aims to develop a high-performance fraud detection system for real-t
 
 
 ### Background
-Fraudulent activities in banking transactions pose significant risks to both banks and customers. With the rapid rise of digital payments, detecting and preventing fraud has become a top priority. Traditional rule-based systems often struggle to keep up with the evolving nature of fraud, resulting in higher false positives or missing new patterns of fraudulent behavior, however it's easy to implement. Machine learning models, particularly tree-based algorithms, are well-suited for handling high-dimensional, non-linear data, making them an ideal choice for fraud detectio, however it requires high-quality labeled data and constant retraining to keep up with evolving fraud tactics. Our approach is hybrid, it combines rule-based systems with machine learning models to detect fraud more effectively.
+Digital payments have expanded the attack surface, making proactive fraud prevention essential. Rule-based systems are easy to deploy but often miss emerging patterns and inflate false positives. Tree-based ML models excel on high-dimensional, non-linear data, yet require quality labels and continuous retraining. This project implements a hybrid approach that fuses rules with ML to capture evolving fraud while controlling false alarms.
 
 **Technologies**
-- Python, Pandas, matplotlib, dask, Java, FastAPI, Apache Kafka, Apache Flink, Apache Spark, PySpark, Hadoop, Docker, MariaDB
+- Python, Pandas, Matplotlib, Dask, Java, FastAPI, Apache Kafka, Apache Flink, Apache Spark, PySpark, Hadoop, Docker, MariaDB
 
 
 ### Data
@@ -67,6 +66,15 @@ Fraudulent activities in banking transactions pose significant risks to both ban
 
 ![Image](/assets/viettelpay/model4.png)
 
+### Responsibilities and Contributions
+
+- Designed a hybrid rules + ML architecture for low-latency screening.
+- Built streaming ingestion and scoring with Kafka/Flink; served models via FastAPI in Docker.
+- Engineered time-window aggregates and behavior features for users/devices/merchants.
+- Trained and compared Random Forest, XGBoost, and LightGBM with systematic tuning.
+- Implemented SHAP-based explanations to support analyst review and decisioning.
+- Established drift monitoring, decision thresholds, and a feedback loop for continuous learning.
+
 ### Evaluation
 - **Model Evaluation**: Evaluate models using metrics such as precision, recall, F1-score, and AUC-ROC, focusing on minimizing false positives and maximizing fraud detection.
 - **Performance Monitoring**: Monitor model performance to detect drift and trigger retraining as necessary.
@@ -98,6 +106,6 @@ Fraudulent activities in banking transactions pose significant risks to both ban
 
 
 ### Expected Outcomes
-- A scalable, accurate, and interpretable fraud detection model capable of identifying fraudulent transactions in real-time.
-- Reduced financial loss due to fraud and improved customer trust through secure payment systems.
-- A continuously evolving fraud detection framework that adapts to new patterns and reduces manual intervention.
+- A scalable, low-latency fraud detection service operating in real time.
+- Lower false positives and improved customer trust.
+- A feedback-driven framework that adapts to new fraud patterns with minimal manual intervention.
