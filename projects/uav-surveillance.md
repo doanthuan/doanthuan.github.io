@@ -48,7 +48,7 @@ The implementation of deep learning-based crack segmentation in transport infras
 - **Deep Learning Frameworks:** TensorFlow
 - **Segmentation Models:** U-Net, DeepLab, Mask R-CNN
 - **Data Augmentation:** Keras Augmentation, Albumentations
-- **Deployment:** TensorFlow Lite, NVIDIA Jetson, DJI Drones
+- **Deployment:** TensorFlow Lite, NVIDIA Jetson
 - **Evaluation Metrics:** IoU, F1-Score, Precision/Recall
 
 <br/>

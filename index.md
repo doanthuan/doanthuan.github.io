@@ -101,7 +101,7 @@ table {
           <img src="/assets/uav-surveillance.webp">
         </td>
         <td width="75%">
-          <a href="/projects/uav-surveillance">UAV-Based Surveillance</a><br/>
+          <a href="/projects/uav-surveillance">AirPatrolAI</a><br/>
           UAV-Based Surveillance with wildfire, road crack detection and segmentation.
         </td>
       </tr>
