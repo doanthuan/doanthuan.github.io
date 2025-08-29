@@ -140,8 +140,7 @@ table {
 #### Interests:
 
 - LLMs, agents.
-- VLM, diffusion models.
-- 3D vision, SLAM, Robotics.
+- VLM, diffusion models, robotics.
 
 #### Publication:
 - Efficient Finetuning Large Language Models For Vietnamese Chatbot (first author) - [MAPR 2023](https://mapr.uit.edu.vn/list-accepted-papers). [Paper’s link](https://ieeexplore.ieee.org/document/10288647)
