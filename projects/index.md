@@ -92,6 +92,15 @@ table {
           OCR system that automates the extraction, verification, and processing of identity card information for banking institutions
         </td>
       </tr>
+        <tr>
+        <td width="25%">
+          <img src="/assets/customer-assistant.png"/>
+        </td>
+        <td width="75%">
+          <a href="/projects/backbase">Backbase — Conversational Banking</a><br/>
+          Multi‑agent LLM chatbot for banking, with RAG grounding and API tool‑use.
+        </td>
+    </tr>
     </tbody>
 </table>
 
