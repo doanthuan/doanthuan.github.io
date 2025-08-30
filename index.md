@@ -43,7 +43,7 @@ table {
     <tbody>
       <tr>
         <td width="25%">
-          <img src="/assets/triangle/datapipeline.png"/>
+          <img src="/assets/triangle/overview.png"/>
         </td>
         <td width="75%">
           <a href="/projects/triangle">TriangleHealth</a><br/>

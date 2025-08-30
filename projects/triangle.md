@@ -11,6 +11,7 @@ permalink: /projects/triangle/
 **URL**: [https://www.trianglehealth.com](https://www.trianglehealth.com)
 
 **Overview:**
+![Data-Pipelines](/assets/triangle/overview.png)
 - Triangle Health transforms clinical corpora into a biomedical knowledge graph and layers GraphRAG with agentic research to deliver grounded, explainable answers for patients, clinicians, and researchers. Initial focus: oncology and neurology.
 - Sources and data:
     - ClinicalTrials.gov, PubMed, FDA drug/label data, PrimeKG.
