@@ -1,55 +1,126 @@
----
-layout: page
-title: Triangle Health
-permalink: /projects/triangle/
----
-
-## Triangle Health
+# Triangle Health
 
 **Date:** 2025
 
 **URL**: [https://www.trianglehealth.com](https://www.trianglehealth.com)
 
-**Overview:**
+**Project Overview:**
 ![Data-Pipelines](/assets/triangle/overview.png)
 - Triangle Health transforms clinical corpora into a biomedical knowledge graph and layers GraphRAG with agentic research to deliver grounded, explainable answers for patients, clinicians, and researchers. Initial focus: oncology and neurology.
-- Sources and data:
-    - ClinicalTrials.gov, PubMed, FDA drug/label data, PrimeKG.
-    - Optional patient EHRs and clinical notes (with consent).
-- Features:
-    - Q&A assistant for personal health conditions.
-    - Comprehensive reports: promising therapies, standard‑of‑care summaries, off‑label options, and drug safety.
-    - Biomedical deep‑research tasks: literature review, hypothesis exploration, fact‑checking, drug discovery and toxicity, genomics and molecular biology.
 
-### Data pipelines
-![Data-Pipelines](/assets/triangle/datapipeline.png)
-- ETL pipelines orchestrated with Apache Airflow to ingest and normalize clinical trials, publications, and FDA drug/label data.
-- Biomedical entity and relationship extraction (drugs, indications, outcomes, biomarkers) to construct a Neo4j knowledge graph.
-- Parsing and transformation of patient EHRs and clinical notes into personal insights using smol‑docling.
+## System Overview
+I designed and built an **Agentic Graph-Retrieved Reasoning Framework**, a next-generation AI system that integrates **biomedical knowledge graphs**, **hybrid semantic–graph retrieval**, and **multi-agent reasoning** to support transparent, evidence-grounded medical decision-making.
 
-### Knowledge Graph & Graph RAG
-![Knowledge-Graph](/assets/triangle/kg.png)
-- Graph indexing and embeddings to enable path‑aware querying, evidence tracing, and graph‑native retrieval.
-- GraphRAG over Neo4j to retrieve context along clinically relevant paths (e.g., drug → indication → outcomes).
-- Reranking to improve faithfulness and specificity for clinician‑facing answers.
+![System-Overview](/assets/triangle/system_overview.png)
 
-### Deep Research Agents
-![Tx-gemma](/assets/triangle/tx-gemma.png)
-- Deep research agents orchestrated with Google ADK and MCP for multi‑step plans: query formulation, evidence gathering, synthesis, and citation.
-- Use cases:
-    - Fact‑checker that verifies claims in emerging reports.
-    - Leverage Tx‑Gemma and BioMni for biomedical deep‑research tasks: drug discovery and toxicity; genomics and molecular biology; cell/gene therapy; biomanufacturing.
-![Fact-Check](/assets/triangle/fact-check.png)
+This project addresses a core challenge in biomedical AI: combining structured scientific knowledge with deep reasoning in a way that is **auditable, explainable, and reliable**. The system empowers researchers and clinicians to explore **clinical trials, emerging treatments, mechanistic evidence**, and patient-specific reasoning paths.
 
-### Deployments & Observability
-- AWS for infrastructure.
-- FastAPI for the backend, SQS for queues, Celery for workers, Redis for caching.
-- Self‑hosted GPUs with vLLM for Tx‑Gemma and BioMni inference.
-- Tracing and observability with Langfuse and Datadog.
+---
 
-### Technologies
+## 🌐 Key Features
+
+### 1. Biomedical Knowledge Graph Construction
+![KnowledgeGraph](/assets/triangle/kg_construction.png)
+Using sources such as ClinicalTrials.gov, PubMed, Semantic Scholar, OpenAlex, and PrimeKG, I built a **provenance-aware biomedical Knowledge Graph (KG)**.  
+Key components include:
+
+- LLM-driven summarization of scientific papers and clinical trials  
+- Semantic chunking and contextual embedding  
+- Entity extraction (diseases, drugs, genes, mutations, trials)  
+- Relation extraction with canonical linking (UMLS, MeSH, OMIM, DrugBank)  
+- Hybrid storage combining a **Graph Database** and **Vector Database**
+
+**Outcome:** a unified and versioned biomedical KG enriched with high-quality insights.
+
+---
+
+### 2. Hybrid Graph + Semantic Retrieval
+![KnowledgeGraphRetrieval](/assets/triangle/kg_retrieval.png)
+To retrieve patient-specific evidence, I implemented a **dual retrieval engine**:
+
+- **Semantic dense retrieval** using BioBERT / PubMedBERT embeddings  
+- **Graph traversal–based symbolic retrieval**  
+- **Fusion scoring** combining similarity, graph relevance, confidence, and centrality
+
+This module supports:
+
+- Clinical trial matching  
+- Mutation–treatment alignment  
+- Case-report similarity scoring  
+
+**Outcome:** Precise, explainable retrieval with KG subgraphs, metadata, and reasoning traces.
+
+---
+
+### 3. Multi-Agent Scientific Research and Ranking
+![AgentResearchRanking](/assets/triangle/agent_research_ranking.png)
+This framework integrates a full **agentic reasoning pipeline**, including:
+
+#### 🔍 Deep Research Agent
+- Iterative, multi-hop biomedical literature exploration  
+- Tool integrations (KG queries, scholarly search, molecular DBs)  
+- Evidence filtering and validation  
+- Self-reflection and consistency checks
+
+#### 🧠 Medical Research Agent
+- Clinical interpretation aligned with disease phenotype and mutation profile  
+- Mechanistic evaluation of treatments  
+- Reasoning summaries with explicit citations
+
+#### 🏆 Tournament-Style Treatment Ranking
+Each treatment is evaluated through pairwise matchups using criteria such as:
+
+- Evidence strength and biological targeting  
+- Safety and contraindications  
+- Guideline and regulatory support  
+- Patient-specific fit  
+- Mechanistic plausibility  
+
+**Outcome:** A ranked list of emerging and high-confidence treatments with transparent justification.
+
+---
+
+## 📈 Results & Contributions
+
+### ✔ Improved Retrieval Accuracy  
+Hybrid retrieval significantly outperforms traditional biomedical RAG systems.
+
+### ✔ Enhanced Interpretability  
+Provides:
+- KG subgraphs  
+- Provenance metadata  
+- Agent reasoning logs  
+- Citation-backed justifications  
+
+### ✔ Reduced Hallucination  
+Multi-agent debate + KG grounding lowers the rate of unverifiable claims.
+
+### ✔ Modular and Auditable  
+Every inference is tied to:
+- Source documents  
+- Extracted relations  
+- Agent reasoning steps  
+- Versioned entities in the KG  
+
+---
+## 🛠 Technical Stack
 - Python, FastAPI, Celery.
 - Apache Airflow, Neo4j, knowledge graph.
 - GraphRAG, hybrid search, reranking.
 - Deep‑research agents, Tx‑Gemma, BioMni, vLLM.
 - Google ADK, MCP.
+
+
+---
+
+## 🎯 Impact
+This project advances medical AI by introducing:
+
+- **Symbolic–Neural hybrid intelligence**  
+- **Agentic scientific reasoning**  
+- **Provenance-driven transparency**  
+- **Patient-specific evidence synthesis**
+
+It enables trustworthy, auditable, and clinically-aligned decision support for oncology, precision medicine, and scientific discovery.
+
+---
