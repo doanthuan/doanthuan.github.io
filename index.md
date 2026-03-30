@@ -2,6 +2,7 @@
 layout: page
 permalink: /
 ---
+
 <style>
 tr td{
     border: none
@@ -14,11 +15,8 @@ table {
 <table width="100%" align="center" border="0" cellspacing="0" cellpadding="20">
       <tbody><tr>
         <td width="70%" valign="middle">
-        <p>
-          Currently working as a Machine Learning Engineer with a focus on developing innovative solutions using Gen AI and LLMs.
-        </p> 
-        <p>
-          Over 10 years of software engineering experience, with 5 years specializing in machine learning and AI.
+          <p>
+          Over 10 years of software engineering experience, with 5 years specializing in machine learning and AI. Currently working as a Machine Learning Engineer with a focus on developing innovative solutions using Gen AI and LLMs.
         </p>
         <p>
           B.S. in Computer Science from <a href="https://en.hcmus.edu.vn/">University of Science</a> (HCMUS) in 2008, M.S. in Computer Science from <a href="https://en.uit.edu.vn/">University of Information Technology</a> (VNU-HCM) in 2023.
@@ -41,6 +39,15 @@ table {
 <h4>Projects</h4>
 <table>
     <tbody>
+      <tr>
+        <td width="25%">
+          <img src="/assets/chefbuddy/overview.jpeg"/>
+        </td>
+        <td width="75%">
+          <a href="/projects/chefbuddy">ChefBuddy</a><br/>
+          Kitchen robot using VLA & Diffusion Policy for language-conditioned manipulation tasks.
+        </td>
+    </tr>
       <tr>
         <td width="25%">
           <img src="/assets/triangle/overview.png"/>
@@ -135,12 +142,11 @@ table {
     </tbody>
 </table>
 
-
-
 #### Interests:
 
-- LLMs, agents.
-- VLM, diffusion models, robotics.
+- LLM, agents.
+- VLA, world models.
 
 #### Publication:
+
 - Efficient Finetuning Large Language Models For Vietnamese Chatbot (first author) - [MAPR 2023](https://mapr.uit.edu.vn/list-accepted-papers). [Paper’s link](https://ieeexplore.ieee.org/document/10288647)
