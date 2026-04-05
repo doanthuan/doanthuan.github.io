@@ -96,7 +96,7 @@
 \newcommand{\resumeProjectHeading}[2]{
     \item
     \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
-      \small#1 & \textbf{\small #2}\\
+      \footnotesize#1 & \textbf{\footnotesize #2}\\
     \end{tabular*}\vspace{-7pt}
 }
 
@@ -139,6 +139,9 @@
     \vspace{0pt}
 \end{center}
 
+%-----------SUMMARY-----------
+\section{Summary}
+AI Engineer with 10+ years of software engineering experience, including 5 years in AI, building machine learning, LLM, retrieval systems, and agentic workflows for production. Currently interested in physical AI and world models.
 
 
 %-----------EXPERIENCE-----------
@@ -147,11 +150,10 @@
 
     \resumeSubheading
       {Spartan}{Nov 2024 -- Present}
-      {Senior AI Engineer}{Ho Chi Minh, Vietnam}
+      {AI Engineer Lead}{Ho Chi Minh, Vietnam}
       \resumeItemListStart
         \resumeItem{Supported solving AI problems across projects within the company.}
-        \resumeItem{Conducted technical sharing sessions and internal workshops.}
-        \resumeItem{Mentored junior AI engineers and supported AI hiring and interviews, contributing to team growth.}
+        \resumeItem{Conducted technical sharing, mentored junior engineers, and supported AI hiring and interviews.}
       \resumeItemListEnd
 
       \resumeProjectHeading
@@ -164,17 +166,17 @@
           \resumeItemListEnd
 
       \resumeProjectHeading
-          {\textbf{LayerProff} $|$ \emph{OpenAI API, Google Imagen, LangGraph, FAISS, Qdrant, python-pptx, FastAPI}}{}
+          {\textbf{LayerProff} $|$ \emph{OpenAI API, Nano Banana, LangGraph, FAISS, Qdrant, python-pptx, FastAPI}}{}
           \resumeItemListStart
             \resumeItem{Built a multi-agent AI system that transforms documents into professional presentation slides (PPTX) using specialized agents for planning, writing, designing, and refining.}
-            \resumeItem{Fine-tuned open-source image models (FLUX.1-dev, SDXL) with LoRA for presentation-ready visual generation. Integrated a critic agent for iterative quality improvement.}
+            \resumeItem{Fine-tuned open-source image models (FLUX.1-dev, SDXL) with LoRA for presentation-ready visual generation.}
           \resumeItemListEnd
 
       \resumeProjectHeading
-          {\textbf{MobileTestAgent} $|$ \emph{GUI-Owl-7B, Appium, uiautomator2, Hugging Face Transformers, FastAPI, LoRA}}{}
+          {\textbf{QAMobileAgent} $|$ \emph{GUI-Owl-7B, Appium, uiautomator2, Hugging Face Transformers, FastAPI, LoRA}}{}
           \resumeItemListStart
             \resumeItem{Designed a hybrid GUI testing agent for banking apps combining a multimodal vision-language model (GUI-Owl-7B) with deterministic Appium execution and rule-based safety fallbacks.}
-            \resumeItem{Built structured UI state representation using screenshots, accessibility trees, and OCR. Designed fine-tuning roadmap with SFT, recovery learning, preference optimization, and RL for domain adaptation.}
+            \resumeItem{Built structured UI state representation using screenshots, accessibility trees, and OCR. Designed fine-tuning roadmap with SFT, preference optimization for domain adaptation.}
           \resumeItemListEnd
 
     \resumeSubheading
@@ -184,16 +186,17 @@
       \resumeProjectHeading
           {\textbf{FinGPT} $|$ \emph{Azure OpenAI, LangChain, LangGraph, FastAPI, Langfuse, Promptfoo, DeepEval}}{}
           \resumeItemListStart
-            \resumeItem{Built a multi-agent conversational banking chatbot with planner, retrieval, banking-API, and compliance agents for secure retail banking interactions.}
-            \resumeItem{Implemented RAG layer with hybrid search, re-ranking, and parent-document retrieval for policy grounding. Designed PII detection/redaction, audit logs, and role-based retrieval.}
+            \resumeItem{Built a multi-agent conversational AI system for retail banking, integrating planner, retrieval, banking API, and compliance agents, supporting 1K+ daily user queries.}
+            \resumeItem{Designed and implemented a production-grade RAG pipeline (hybrid search + re-ranking), improving response accuracy by ~20–25\% on internal evaluation benchmarks.}
+            \resumeItem{Developed compliance and safety layer (PII detection/redaction, audit logging, role-based retrieval), reducing risk of sensitive data exposure and ensuring 100\% audit traceability.}
           \resumeItemListEnd
 
       \resumeProjectHeading
           {\textbf{EnsayoAI} $|$ \emph{Llama3, LangGraph, RAG, Langfuse, Promptfoo, DeepEval, pgvector, FastAPI, AWS SageMaker}}{}
           \resumeItemListStart
-            \resumeItem{Developed a generative AI testing automation tool using open-source LLMs (Mistral, Llama 3) with domain-adaptive fine-tuning (LoRA, RLHF) for software testing workflows.}
-            \resumeItem{Built an intelligent chatbot with advanced RAG featuring hybrid search, semantic routing, re-ranking, multi-retriever, and multimodal capabilities.}
-            \resumeItem{Architected a multi-agent LLM framework using LangChain and LangGraph to automate complex banking operations. Implemented evaluation pipelines with DeepEval and Promptfoo.}
+            \resumeItem{Developed a generative AI testing platform leveraging Llama 3 and Mistral, automating test case generation and reducing manual QA effort by 40–60\%.}
+            \resumeItem{Applied domain-adaptive fine-tuning (LoRA, RLHF), combining with heuristic rules to improve relevance and correctness of generated test cases by 15–20\% based on evaluation metrics.}
+            \resumeItem{Designed and deployed LLM evaluation pipelines (DeepEval, Promptfoo) to benchmark model performance and ensure reliability across test scenarios.}
           \resumeItemListEnd
 
     \resumeSubheading
@@ -215,9 +218,15 @@
             \resumeItem{Built real-time data pipeline using Apache Kafka and Flink for processing payment transactions with threshold-based decision-making.}
           \resumeItemListEnd
 
+      \resumeProjectHeading
+          {\textbf{AirPatrol} $|$ \emph{U-Net, Mask R-CNN, TensorFlow Lite, ONNX, TensorRT, Jetson Nano}}{}
+          \resumeItemListStart
+            \resumeItem{Developed and deployed deep learning models (U-Net, Mask R-CNN, Xception) for crack detection and wildfire classification, optimized with TensorFlow Lite for real-time inference on NVIDIA Jetson Nano.}
+          \resumeItemListEnd
+
     \resumeSubheading
       {Earlier Experience}{2008 -- 2018}
-      {Global Outsource Solution (Technical Lead), Global CyberSoft / Forix (Software Engineer)}{}
+      {Global Outsource Solution (Technical Lead), Global CyberSoft, Forix (Software Engineer)}{}
       \resumeItemListStart
         \resumeItem{Led development of scalable web and enterprise systems across e-commerce, CMS, and data platforms.}
         \resumeItem{Built backend services and system architectures; established CI/CD pipelines and engineering best practices.}
@@ -259,13 +268,11 @@ generative models.}
 \section{Technical Skills}
  \begin{itemize}[leftmargin=0.15in, label={}]
     \small{\setstretch{1.1}\item{
-     \textbf{Languages}{: Python, PHP, JavaScript, Java.} \\
-     \textbf{ML Algorithms}{: Regression, Classification, Tree-based Models, CNN, RNN, Transformers.} \\
-     \textbf{AI Frameworks \& Tools}{: TensorFlow, PyTorch, Scikit-learn, Hugging Face, Pandas, Numpy, Matplotlib, OpenCV, NLTK, MLflow, Datadog, Sentry, Prometheus, Grafana, SageMaker, VertexAI.} \\
-     \textbf{LLM Tools}{: LangChain, Google ADK, LlamaIndex, Langfuse, LiteLLM, vLLM, Ollama, Unsloth, DeepEval, Guardrails.} \\
-     \textbf{App Frameworks}{: FastAPI, Flask, Spring, Laravel, React, NodeJS, Angular, VueJS, Magento, WordPress.} \\
-     \textbf{Data}{: MySQL, PostgreSQL, MongoDB, Redis, Neo4j, Apache Airflow, Kafka, Flink, PySpark, ChromaDB.} \\
-     \textbf{Others}{: Git, Docker, Kubernetes, AWS, GCP, Arduino, Raspberry.} \\
+     \textbf{Programming}{: Claude Code, Python, JavaScript, Java, PHP} \\
+     \textbf{AI Frameworks \& Tools}{: TensorFlow, PyTorch, Scikit-learn, Hugging Face Transformer, Pandas, Numpy, Matplotlib, OpenCV, NLTK, MLflow, Datadog, Sentry, Prometheus, Grafana, SageMaker, VertexAI.} \\
+     \textbf{LLM Tools}{: LangChain, Google ADK, LlamaIndex, Langfuse, LiteLLM, vLLM, Ollama, Unsloth, DeepEval.} \\
+     \textbf{App Frameworks}{: FastAPI, Flask, Spring, Laravel, React, NodeJS, VueJS} \\
+     \textbf{Data \& Cloud}{: MySQL, PostgreSQL, MongoDB, Redis, Neo4j, Airflow, Kafka, Flink, PySpark, ChromaDB, AWS, GCP.} \\
     }}
  \end{itemize}
 
@@ -283,12 +290,11 @@ generative models.}
           {\textbf{HomeExplorer} $|$ \emph{ROS, GMapping, Hector SLAM, YOLOv5, TensorRT, Jetson Nano}}{}
           \resumeItemListStart
             \resumeItem{Built an edge-based SLAM and semantic mapping system combining 2D LiDAR localization with camera-based object detection on NVIDIA Jetson Nano.}
-            \resumeItem{Fused LiDAR occupancy grid with detected object labels to produce a semantic map of indoor environments.}
           \resumeItemListEnd
     \resumeSubHeadingListEnd
 
 %-----------Achievements-----------
-\section{Achievements}
+\section{Additional}
     \resumeSubHeadingListStart
         \resumeProjectHeading
           {\textbf{Certificates}}{}
@@ -301,7 +307,7 @@ generative models.}
         \resumeProjectHeading
           {\textbf{Publication:}}{}
           \resumeItemListStart
-            \resumeItem{Efficient Finetuning Large Language Models For Vietnamese Chatbot (first author) \href{https://ieeexplore.ieee.org/document/10288647}{\underline{MAPR}} 2023 }
+            \resumeItem{Efficient Finetuning Large Language Models For Vietnamese Chatbot \href{https://ieeexplore.ieee.org/document/10288647}{\underline{MAPR}} 2023 }
           \resumeItemListEnd
 
     \resumeSubHeadingListEnd
