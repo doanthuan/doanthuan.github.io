@@ -9,6 +9,7 @@ permalink: /projects/uav-surveillance/
 
 ![Image](/assets/crack_seg.jpg)
 
+### Date: 2021
 
 
 #### Overview

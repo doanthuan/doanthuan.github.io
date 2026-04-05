@@ -1,0 +1,311 @@
+%-------------------------
+% Resume in Latex
+% Author : Jake Gutierrez
+% Based off of: https://github.com/sb2nov/resume
+% License : MIT
+%------------------------
+
+\documentclass[letterpaper,11pt]{article}
+
+\usepackage{latexsym}
+\usepackage[empty]{fullpage}
+\usepackage{titlesec}
+\usepackage{marvosym}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage{verbatim}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fancyhdr}
+\usepackage[english]{babel}
+\usepackage{tabularx}
+\usepackage{fontawesome5}
+\input{glyphtounicode}
+\usepackage{setspace}
+
+%----------FONT OPTIONS----------
+% sans-serif
+% \usepackage[sfdefault]{FiraSans}
+% \usepackage[sfdefault]{roboto}
+% \usepackage[sfdefault]{noto-sans}
+% \usepackage[default]{sourcesanspro}
+
+% serif
+% \usepackage{CormorantGaramond}
+% \usepackage{charter}
+
+
+\pagestyle{fancy}
+\fancyhf{} % clear all header and footer fields
+\fancyfoot{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+% Adjust margins
+\addtolength{\oddsidemargin}{-0.6in}
+\addtolength{\evensidemargin}{-0.5in}
+\addtolength{\textwidth}{1.19in}
+\addtolength{\topmargin}{-.7in}
+\addtolength{\textheight}{1.4in}
+
+
+
+\urlstyle{same}
+
+\raggedbottom
+\raggedright
+\setlength{\tabcolsep}{0in}
+
+\titleformat{\section}{
+  \vspace{-7pt}\scshape\raggedright\large
+}{}{0em}{}[\color{black}\titlerule \vspace{-5pt}]
+
+% Ensure that generate pdf is machine readable/ATS parsable
+\pdfgentounicode=1
+
+%-------------------------
+% Custom commands
+\newcommand{\resumeItem}[1]{
+  \item\small{
+    {#1 \vspace{-2pt}}
+  }
+}
+
+\newcommand{\classesList}[4]{
+    \item\small{
+        {#1 #2 #3 #4 \vspace{-2pt}}
+  }
+}
+
+\newcommand{\resumeSubheading}[4]{
+  \vspace{-2pt}\item
+    \begin{tabular*}{1.0\textwidth}[t]{l@{\extracolsep{\fill}}r}
+      \textbf{#1} & \textbf{\small #2} \\
+      \textit{\small#3} & \textit{\small #4} \\
+    \end{tabular*}\vspace{-7pt}
+}
+
+
+
+\newcommand{\resumeSubSubheading}[2]{
+    \item
+    \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
+      \textit{\small#1} & \textit{\small #2} \\
+    \end{tabular*}\vspace{-7pt}
+}
+
+\newcommand{\resumeProjectHeading}[2]{
+    \item
+    \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
+      \small#1 & \textbf{\small #2}\\
+    \end{tabular*}\vspace{-7pt}
+}
+
+\newcommand{\resumeSubItem}[1]{\resumeItem{#1}\vspace{-4pt}}
+
+\renewcommand\labelitemi{$\vcenter{\hbox{\tiny$\bullet$}}$}
+\renewcommand\labelitemii{$\vcenter{\hbox{\tiny$\bullet$}}$}
+
+\newcommand{\resumeSubHeadingListStart}{\begin{itemize}[leftmargin=0.0in, label={}]}
+\newcommand{\resumeSubHeadingListEnd}{\end{itemize}}
+\newcommand{\resumeItemListStart}{\begin{itemize}}
+\newcommand{\resumeItemListEnd}{\end{itemize}\vspace{-5pt}}
+
+
+\newcommand{\resumeSubheadingX}[4]{
+  \vspace{-2pt}\item
+    \begin{tabular*}{1.0\textwidth}[t]{l@{\extracolsep{\fill}}r}
+      {\small #1} \vspace{2pt} & {\small #2} \\
+      {\small #3} & {\small #4} \\
+    \end{tabular*}\vspace{-7pt}
+}
+
+%-------------------------------------------
+%%%%%%  RESUME STARTS HERE  %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\begin{document}
+
+%----------HEADING----------
+% \begin{tabular*}{\textwidth}{l@{\extracolsep{\fill}}r}
+%   \textbf{\href{http://sourabhbajaj.com/}{\Large Sourabh Bajaj}} & Email : \href{mailto:sourabh@sourabhbajaj.com}{sourabh@sourabhbajaj.com}\\
+%   \href{http://sourabhbajaj.com/}{http://www.sourabhbajaj.com} & Mobile : +1-123-456-7890 \\
+% \end{tabular*}
+
+\begin{center}
+    \textbf{\Huge \scshape Thuan Doan} \\ \vspace{5pt}
+    \small \raisebox{-0.1\height}\faPhone\ (+84)902727231  $|$ {\raisebox{-0.2\height}\faEnvelope\ {\underline{doanvuthuan@gmail.com}}} $|$
+    \href{https://www.linkedin.com/in/doan-thuan-16ab1a61/}{\raisebox{-0.2\height}\faLinkedin\ \underline{linkedin}} $|$
+    \href{https://doanthuan.github.io/}{\raisebox{-0.2\height}\faGithub\ \underline{profile}}
+    \vspace{0pt}
+\end{center}
+
+
+
+%-----------EXPERIENCE-----------
+\section{Experience}
+  \resumeSubHeadingListStart
+
+    \resumeSubheading
+      {Spartan}{Nov 2024 -- Present}
+      {Senior AI Engineer}{Ho Chi Minh, Vietnam}
+      \resumeItemListStart
+        \resumeItem{Supported solving AI problems across projects within the company.}
+        \resumeItem{Conducted technical sharing sessions and internal workshops.}
+        \resumeItem{Mentored junior AI engineers and supported AI hiring and interviews, contributing to team growth.}
+      \resumeItemListEnd
+
+      \resumeProjectHeading
+          {\textbf{TriangleHealth} $|$ \emph{Apache Airflow, TxGemma, GraphRAG, Neo4j, Google ADK, MCP, vLLM}}{}
+          \resumeItemListStart
+            \resumeItem{Built Airflow-based data pipelines processing 10M+ biomedical entities and documents, enabling large-scale knowledge graph construction in Neo4j.}
+            \resumeItem{Designed graph enhanced retrieval (hybrid) + reranking (TourRank) improving answer accuracy by +15-20\% on internal medical retrieval benchmarks.}
+            \resumeItem{Developed multi-agent medical research system (Google ADK + TxGemma/BioMNI) to minimize hallucinations and deliver evidence-grounded, verifiable outputs.}
+            \resumeItem{Optimized model deployment using vLLM. Implemented tracing and observability with Langfuse and Datadog.}
+          \resumeItemListEnd
+
+      \resumeProjectHeading
+          {\textbf{LayerProff} $|$ \emph{OpenAI API, Google Imagen, LangGraph, FAISS, Qdrant, python-pptx, FastAPI}}{}
+          \resumeItemListStart
+            \resumeItem{Built a multi-agent AI system that transforms documents into professional presentation slides (PPTX) using specialized agents for planning, writing, designing, and refining.}
+            \resumeItem{Fine-tuned open-source image models (FLUX.1-dev, SDXL) with LoRA for presentation-ready visual generation. Integrated a critic agent for iterative quality improvement.}
+          \resumeItemListEnd
+
+      \resumeProjectHeading
+          {\textbf{MobileTestAgent} $|$ \emph{GUI-Owl-7B, Appium, uiautomator2, Hugging Face Transformers, FastAPI, LoRA}}{}
+          \resumeItemListStart
+            \resumeItem{Designed a hybrid GUI testing agent for banking apps combining a multimodal vision-language model (GUI-Owl-7B) with deterministic Appium execution and rule-based safety fallbacks.}
+            \resumeItem{Built structured UI state representation using screenshots, accessibility trees, and OCR. Designed fine-tuning roadmap with SFT, recovery learning, preference optimization, and RL for domain adaptation.}
+          \resumeItemListEnd
+
+    \resumeSubheading
+      {HCLTech}{Jun 2023 -- Oct 2024}
+      {AI Engineer/Researcher}{Ho Chi Minh, Vietnam}
+
+      \resumeProjectHeading
+          {\textbf{FinGPT} $|$ \emph{Azure OpenAI, LangChain, LangGraph, FastAPI, Langfuse, Promptfoo, DeepEval}}{}
+          \resumeItemListStart
+            \resumeItem{Built a multi-agent conversational banking chatbot with planner, retrieval, banking-API, and compliance agents for secure retail banking interactions.}
+            \resumeItem{Implemented RAG layer with hybrid search, re-ranking, and parent-document retrieval for policy grounding. Designed PII detection/redaction, audit logs, and role-based retrieval.}
+          \resumeItemListEnd
+
+      \resumeProjectHeading
+          {\textbf{EnsayoAI} $|$ \emph{Llama3, LangGraph, RAG, Langfuse, Promptfoo, DeepEval, pgvector, FastAPI, AWS SageMaker}}{}
+          \resumeItemListStart
+            \resumeItem{Developed a generative AI testing automation tool using open-source LLMs (Mistral, Llama 3) with domain-adaptive fine-tuning (LoRA, RLHF) for software testing workflows.}
+            \resumeItem{Built an intelligent chatbot with advanced RAG featuring hybrid search, semantic routing, re-ranking, multi-retriever, and multimodal capabilities.}
+            \resumeItem{Architected a multi-agent LLM framework using LangChain and LangGraph to automate complex banking operations. Implemented evaluation pipelines with DeepEval and Promptfoo.}
+          \resumeItemListEnd
+
+    \resumeSubheading
+      {Infinigru}{Aug 2018 -- Apr 2023}
+      {Machine Learning Engineer}{Korea/Vietnam}
+
+      \resumeProjectHeading
+          {\textbf{GruBot} $|$ \emph{Python, wav2vec, Kaldi, RASA, BERT, LSTM, Kubernetes, MLflow, Prometheus, Grafana}}{}
+          \resumeItemListStart
+            \resumeItem{Developed and fine-tuned Korean and Vietnamese speech recognition models using Kaldi and wav2vec.}
+            \resumeItem{Built RASA-based conversational AI chatbot with NLU pipeline and dialogue management, handling multi-turn conversations with seamless human agent hand-off.}
+            \resumeItem{Optimized BERT-based models for Named Entity Recognition (NER) and Sentiment Analysis.}
+          \resumeItemListEnd
+
+      \resumeProjectHeading
+          {\textbf{ViettelFDS} $|$ \emph{Python, Java, Spring Boot, Apache Kafka, Apache Flink, PySpark, XGBoost, LightGBM, SHAP, VertexAI}}{}
+          \resumeItemListStart
+            \resumeItem{Developed high-performance real-time fraud detection system combining rule-based systems with ML models (Random Forest, XGBoost, LightGBM) to reduce false positives and detect evolving fraud patterns.}
+            \resumeItem{Built real-time data pipeline using Apache Kafka and Flink for processing payment transactions with threshold-based decision-making.}
+          \resumeItemListEnd
+
+    \resumeSubheading
+      {Earlier Experience}{2008 -- 2018}
+      {Global Outsource Solution (Technical Lead), Global CyberSoft / Forix (Software Engineer)}{}
+      \resumeItemListStart
+        \resumeItem{Led development of scalable web and enterprise systems across e-commerce, CMS, and data platforms.}
+        \resumeItem{Built backend services and system architectures; established CI/CD pipelines and engineering best practices.}
+      \resumeItemListEnd
+
+  \resumeSubHeadingListEnd
+
+%-----------EDUCATION-----------
+\section{Education}
+  \resumeSubHeadingListStart
+    \resumeSubheading
+      {University of Information Technology}{Ho Chi Minh, Vietnam}
+      {Master's Degree in Computer Science}{2020 -- 2023}
+        \resumeItemListStart
+            \resumeItem{Research assistant at MMLab. Topics: NLP, LLMs, VLM, SLAM, 3D vision, deep
+generative models.}
+      \resumeItemListEnd
+    \resumeSubheading
+      {Japan Advanced Institute of Science and Technology (JAIST)}{Ishikawa, Japan}
+      {Research Assistant under supervision of Prof. Kazuhiro Ogata}{Jan-Mar 2020}
+          \resumeItemListStart
+            \resumeItem{Research Topic: Theorem proving and state machine with CafeOBJ.}
+        \resumeItemListEnd
+
+    \resumeSubheading
+      {Kookmin University}{Seoul, Korea}
+      {Research Assistant under supervision of Prof. Young Kim.}{2011 -- 2012}
+        \resumeItemListStart
+            \resumeItem{Research Topic: Security-Enhanced Linux (SELinux) for web servers.}
+        \resumeItemListEnd
+
+    \resumeSubheading
+          {University of Science}{Ho Chi Minh, Vietnam}
+          {Bachelor's Degree in Computer Science}{2004 -- 2008}
+
+      \resumeSubHeadingListEnd
+
+%-----------PROGRAMMING SKILLS-----------
+\section{Technical Skills}
+ \begin{itemize}[leftmargin=0.15in, label={}]
+    \small{\setstretch{1.1}\item{
+     \textbf{Languages}{: Python, PHP, JavaScript, Java.} \\
+     \textbf{ML Algorithms}{: Regression, Classification, Tree-based Models, CNN, RNN, Transformers.} \\
+     \textbf{AI Frameworks \& Tools}{: TensorFlow, PyTorch, Scikit-learn, Hugging Face, Pandas, Numpy, Matplotlib, OpenCV, NLTK, MLflow, Datadog, Sentry, Prometheus, Grafana, SageMaker, VertexAI.} \\
+     \textbf{LLM Tools}{: LangChain, Google ADK, LlamaIndex, Langfuse, LiteLLM, vLLM, Ollama, Unsloth, DeepEval, Guardrails.} \\
+     \textbf{App Frameworks}{: FastAPI, Flask, Spring, Laravel, React, NodeJS, Angular, VueJS, Magento, WordPress.} \\
+     \textbf{Data}{: MySQL, PostgreSQL, MongoDB, Redis, Neo4j, Apache Airflow, Kafka, Flink, PySpark, ChromaDB.} \\
+     \textbf{Others}{: Git, Docker, Kubernetes, AWS, GCP, Arduino, Raspberry.} \\
+    }}
+ \end{itemize}
+
+%-----------HOBBY PROJECTS-----------
+\section{Hobby Projects}
+    \resumeSubHeadingListStart
+      \resumeProjectHeading
+          {\textbf{ChefBuddy} $|$ \emph{NVIDIA GR00T N1.5, LeRobot, SO-100/SO-101, LoRA, TensorRT}}{}
+          \resumeItemListStart
+            \resumeItem{Built a kitchen robot using NVIDIA's GR00T N1.5 vision-language-action model with SO-100 arm for language-conditioned pick-and-place tasks such as sandwich assembly.}
+            \resumeItem{Implemented full pipeline from teleoperation data recording to LoRA fine-tuning and real-time deployment.}
+          \resumeItemListEnd
+
+      \resumeProjectHeading
+          {\textbf{HomeExplorer} $|$ \emph{ROS, GMapping, Hector SLAM, YOLOv5, TensorRT, Jetson Nano}}{}
+          \resumeItemListStart
+            \resumeItem{Built an edge-based SLAM and semantic mapping system combining 2D LiDAR localization with camera-based object detection on NVIDIA Jetson Nano.}
+            \resumeItem{Fused LiDAR occupancy grid with detected object labels to produce a semantic map of indoor environments.}
+          \resumeItemListEnd
+    \resumeSubHeadingListEnd
+
+%-----------Achievements-----------
+\section{Achievements}
+    \resumeSubHeadingListStart
+        \resumeProjectHeading
+          {\textbf{Certificates}}{}
+          \resumeItemListStart
+            \resumeItem{Tensorflow Developer - \href{https://www.credential.net/6d8db6f4-24ab-42a6-bbdd-a31299b58d2c}{\underline{Certificate}} }
+            \resumeItem{ Coursera specializations about Math, Machine Learning, Deep Learning, Vision, NLP, Data Science - \href{https://drive.google.com/drive/folders/1MesuuivR7FrZzcSStyVPlOYw0rH2co6w}{\underline{Certificates}}  }
+            \resumeItem{IELTS 6.5 - \href{https://drive.google.com/file/d/1OUYZ5Y5WAamm9ywC7x6ThLkV99Q2z_pp/view?usp=sharing}{\underline{Certificate}} }
+          \resumeItemListEnd
+
+        \resumeProjectHeading
+          {\textbf{Publication:}}{}
+          \resumeItemListStart
+            \resumeItem{Efficient Finetuning Large Language Models For Vietnamese Chatbot (first author) \href{https://ieeexplore.ieee.org/document/10288647}{\underline{MAPR}} 2023 }
+          \resumeItemListEnd
+
+    \resumeSubHeadingListEnd
+
+
+%-------------------------------------------
+\end{document}
