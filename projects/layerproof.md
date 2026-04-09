@@ -1,4 +1,4 @@
-# 🚀 LayerProff
+# 🚀 LayerProof
 
 ### Multi-Agent AI System for Generating Professional Presentations
 
@@ -144,47 +144,27 @@ flowchart TD
 ---
 
 
-### 🔹 Phase 2 — Fine-Tuned Image Model (In Progress)
+### 🔹 Phase 2 — User-Preference Image Optimization (In Progress)
 
-**Goal:** Improve slide visuals by fine-tuning an open-source image model to generate **clean, consistent, and presentation-ready images**.
+**Goal:** Improve slide visuals by optimizing the image generation process to align with **user preferences** — producing images that match the intended style, tone, and domain.
 
 ---
 
 #### 🧠 Approach
 
-* Base models:
-
-  * **FLUX.1-dev** (preferred)
-  * **Stable Diffusion XL** (faster alternative)
-
-* Method: **LoRA / QLoRA fine-tuning** (efficient + modular)
+* **Preference-driven prompt engineering** — dynamically construct image prompts based on user-specified style, color palette, and domain context
+* **Iterative feedback loop** — the Critic agent evaluates generated images against user preferences and triggers re-generation with refined prompts
+* **Style templates** — curated prompt templates for common domains (tech, business, education, healthcare) that users can select or customize
+* **Image selection pipeline** — generate multiple candidates per slide and rank them using CLIP-based similarity scoring against user-provided reference images or style descriptions
 
 ---
 
-#### 📦 Training Data
+#### 🎯 What Gets Optimized
 
-* 500–3,000 curated images
-
-* Focus on:
-
-  * technical architecture visuals
-  * AI / system workflows
-  * business & enterprise illustrations
-
-* Data sources:
-
-  * synthetic images from Phase 1 (Imagen)
-  * curated presentation-style visuals
-  * labeled by style + domain
-
----
-
-#### ✍️ What the Model Learns
-
-* clean, minimal slide aesthetics
-* consistent style across slides
-* domain-specific visuals (AI, fintech, etc.)
-* “presentation-native” image generation
+* prompt construction aligned to user style preferences
+* consistency across slides via shared style context
+* domain-specific visual tone (AI, fintech, education, etc.)
+* iterative refinement based on user feedback
 
 ---
 
@@ -216,5 +196,5 @@ Inspired by recent work :
 * 📄 Document → Slides
 * 🎨 Multimodal generation
 * 🔁 Self-refinement loop
-* 🧪 Fine-tuning pipeline
+* 🧪 User-preference image optimization
 

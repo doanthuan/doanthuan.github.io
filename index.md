@@ -40,7 +40,7 @@ table {
 
 - **[TriangleHealth](/projects/triangle)** — AI-powered personal health assistant platform that helps patients organize, understand, and explore their medical information and treatment option
 
-- **[LayerProff](/projects/layerproff)** — Multi-agent AI system that transforms documents, prompts, or notes into professional presentation slides (PPTX).
+- **[LayerProff](/projects/layerproff)** — Multi-agent AI system that transforms documents into professional presentation slides (PPTX) with user-preference-aligned image generation.
 
 - **[QAMobileAgent](/projects/uiagent)** — Hybrid GUI testing agent for banking apps using GUI-Owl-7B vision-language model with deterministic Appium execution.
 
