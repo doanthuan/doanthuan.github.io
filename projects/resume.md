@@ -23,9 +23,9 @@ AI Engineer with 10+ years of software engineering experience, including 5 years
 - Developed multi-agent medical research system (Google ADK + TxGemma/BioMNI) to minimize hallucinations and deliver evidence-grounded, verifiable outputs. 
 - Optimized model deployment using vLLM. Implemented tracing and observability with Langfuse and Datadog.
 
-**LayerProff** | *OpenAI API, Google Imagen, CLIP, LangGraph, FAISS, Qdrant, python-pptx, FastAPI*
-- Built a multi-agent AI system that transforms documents into professional presentation slides (PPTX) using specialized agents for planning, writing, designing, and refining.
-- Optimized image generation pipeline with preference-driven prompt engineering, CLIP-based candidate ranking, and iterative critic-agent refinement to produce visuals aligned with user style preferences.
+**LayerProof** | *Kotlin, Micronaut, PostgreSQL, SQS, Gemini, OpenAI, Claude, Python, PyTorch, AWS ECS Fargate*
+- Designed an event-sourced durable workflow engine with a strict determinism contract and pluggable queue backends, powering fully-replayable multi-agent pipelines that generate social-media campaigns, slide decks, and mindmaps.
+- Built a Python image-processing worker on ECS Fargate running custom GPU models (CyberAgent LayerD for slide layer decomposition, BiRefNet matting, U²-Net background removal) alongside OCR inpainting, raster→SVG, and headless-Chromium rendering, all co-scheduled on a weighted-semaphore capacity pool.
 
 **QAMobileAgent** | *GUI-Owl-7B, Appium, uiautomator2, Hugging Face Transformers, FastAPI, LoRA*
 - Designed a hybrid GUI testing agent for banking apps combining a multimodal vision-language model (GUI-Owl-7B) with deterministic Appium execution and rule-based safety fallbacks.
