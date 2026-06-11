@@ -54,18 +54,24 @@ This module supports:
 
 ### 3. Multi-Agent Scientific Research and Ranking
 ![AgentResearchRanking](/assets/triangle/agent_research_ranking.png)
-This framework integrates a full **agentic reasoning pipeline**, including:
+This framework integrates a full **agentic reasoning pipeline** built around a **Medical Deep Research orchestrator agent** that plans the investigation, delegates to specialized subagents, and synthesizes their findings:
 
-#### 🔍 Deep Research Agent
+#### 🧭 Orchestrator: Medical Deep Research Agent
+- Decomposes a clinical question into research subtasks  
+- Routes subtasks to the appropriate subagent and coordinates multi-hop reasoning  
+- Aggregates, reconciles, and synthesizes subagent outputs into grounded conclusions
+
+#### 🔍 Deep Research Subagent
+- ReAct agent with tools to access the **web** and the biomedical **knowledge base**  
 - Iterative, multi-hop biomedical literature exploration  
-- Tool integrations (KG queries, scholarly search, molecular DBs)  
-- Evidence filtering and validation  
-- Self-reflection and consistency checks
+- Evidence filtering, validation, and consistency checks
 
-#### 🧠 Medical Research Agent
+#### 🧠 Medical Subagent
+- ReAct agent backed by a **self-hosted Tx-Gemma model** and **Therapeutic Data Commons (TDC) tools**  
 - Clinical interpretation aligned with disease phenotype and mutation profile  
-- Mechanistic evaluation of treatments  
-- Reasoning summaries with explicit citations
+- Mechanistic evaluation of treatments with explicit citations
+
+![MedicalResearchAgent](/assets/triangle/medical_research_agent.png)
 
 #### 🏆 Tournament-Style Treatment Ranking
 Each treatment is evaluated through pairwise matchups using criteria such as:
