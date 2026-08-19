@@ -1,12 +1,14 @@
 ---
 layout: page
-title: Blueprint Knowledge and 3D Representation
-permalink: /projects/blueprint-knowledge-3d/
+title: Andpad — Blueprint Knowledge and 3D Representation
+permalink: /projects/andpad/
 ---
 
-# 📐 Blueprint Knowledge and 3D Representation
+# 🏗️ Andpad
 
-### Multimodal retrieval over scanned drawings, and a hybrid CV + VLM pipeline that turns floor plans into IFC/BIM
+### Blueprint Knowledge and 3D Representation
+
+Multimodal retrieval over scanned drawings, and a hybrid CV + VLM pipeline that turns floor plans into IFC/BIM.
 
 **Date:** 2026
 
@@ -66,20 +68,9 @@ Mitigations exist and are worth knowing precisely — token pooling at factor 3 
 
 Single-vector multimodal embeddings, hybrid retrieval in the OpenSearch cluster that already exists, a reranker, and real page images in the generation prompt:
 
-```
-INGEST                                    QUERY
-scanned PDF                               user query
-  ├─ rasterize page (150–200 DPI) → S3      ├─ embed (Cohere Embed v4, text)
-  ├─ layout model → figure/table crops      │
-  │    (Docling · Surya · Textract)         ├─ HYBRID first stage (top 100–200)
-  ├─ OCR text layer  ─────────────┐         │    BM25(ocr_text) ⊕ kNN(mm_embedding)
-  └─ Cohere Embed v4 (multimodal) │         │    fused by RRF or normalization pipeline
-        on page + region images   │         ├─ Cohere Rerank 3.5 (Bedrock)
-                                  ▼         │    [+ optional VLM-as-reranker on hard queries]
-        OpenSearch doc per page/region      └─ fetch top 3–8 page images from S3
-        { ocr_text, mm_embedding(knn),           → Gemini Flash 2.5 with IMAGES + OCR
-          page_image_uri, doc_id, page_no }        + cite {doc, page}
-```
+<p align="center">
+  <img src="/assets/andpad/retrieval-architecture.svg" width="100%" alt="Retrieval architecture: ingest rasterizes pages to S3 and embeds page and region images with a multimodal embedder into OpenSearch alongside OCR text; queries run hybrid BM25 plus kNN, rerank, then send the top page images to the generator for a cited answer">
+</p>
 
 Deliberate choices worth defending:
 
@@ -146,25 +137,21 @@ So the architecture is a **hybrid split**:
 
 That buys the reliability of classical CV with the flexibility of an LLM confined to the judgments it's genuinely good at. **The VLM never writes a coordinate**, and that invariant is enforced by a test rather than by code-review discipline.
 
+<p align="center">
+  <img src="/assets/andpad/hybrid-split.svg" width="100%" alt="Comparison: the rejected approach asked a vision model for coordinates and produced 5 to 15 percent error, hallucinated walls and broken topology; the adopted hybrid split gives all geometry to a deterministic CV engine and confines the VLM to room labels, opening types, scale reading and advisory QA">
+</p>
+
 Scope was locked at kickoff — single-storey, orthogonal ("Manhattan"), clean residential plans; IFC4 output with walls, doors/windows, slab, and spaces — then deliberately *extended* mid-PoC (via ADR-0001) to cover **model enrichment**, because the demo target is a finished-looking home rather than bare walls. Enrichment follows the same rule: every placement is computed deterministically, and the LLM never invents geometry.
 
 ### The pipeline
 
 Eight stages that communicate **only through files on disk** (`masks.npz → plan.json → plan.scaled.json → plan.ifc`), which makes every stage independently inspectable and re-runnable:
 
-```
-parse → vectorize → vlm-enrich → overlay → scale → furnish → ifc → vlm-qa
-└─ CV geometry ──┘   └─ VLM ──┘            └── deterministic ──┘   └ VLM ┘
-                     (labels/types only)                          (advisory)
-```
+<p align="center">
+  <img src="/assets/andpad/f2b-pipeline.svg" width="100%" alt="The eight-stage conversion pipeline: parse, vectorize, vlm-enrich, overlay, scale, furnish, ifc and vlm-qa, colour-coded so the six deterministic CV stages own all geometry while the two VLM stages write only labels and types, with file artifacts masks.npz, plan.json, plan.scaled.json and plan.ifc passing between stages">
+</p>
 
-| Stage | What happens |
-| --- | --- |
-| **parse** | One pretrained multi-task model (CubiCasa5K) yields wall masks, room segmentation, and door/window heatmaps in a single inference. Large plans are **tiled at high resolution rather than downscaled** — walls are only 3–10 px wide, so downscaling erases the very thing being detected |
-| **vectorize** | skeletonize → axis-snap → merge → junction-snap turns masks into wall centerlines, with thickness from the distance transform; rooms via connected components + Shapely; fixtures (toilet, sink, bathtub, appliance) read from the model's icon channels |
-| **scale** | The pipeline is **pixel-authoritative** — geometry stays in px and scaling fills parallel `*_mm` fields. With no resolved scale the API **parks** the conversion (`awaiting_scale`) and asks the user instead of guessing |
-| **furnish** | A pure, deterministic layout engine places furniture per room label from mm-space templates with Shapely collision checks. The one deliberate exception to pixel-authority: furniture is mm-authoritative and back-projected to px for the overlay |
-| **ifc** | IfcOpenShell builds the IFC4 hierarchy plus enrichment — procedural part compositions for fixtures and furniture (LOD ~200, no mesh assets), per-room finish floors, materials, a **hip roof computed as a distance-transform heightfield** (height = pitch × distance to footprint boundary, so it works on any Manhattan footprint), and exterior extras: siding, garage door, porch, walkway aprons |
+Two of the eight stages are the VLM's, and neither of them may touch a number. The other detail worth pulling out of the diagram: **`furnish` is the one deliberate exception to pixel-authority** — furniture is mm-authoritative and back-projected to px for the overlay — and the parse stage uses one pretrained multi-task model (CubiCasa5K) to get wall masks, room segmentation, and door/window heatmaps from a single inference.
 
 ### The VLM semantic layer
 

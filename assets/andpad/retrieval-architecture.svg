@@ -1,0 +1,98 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 470" width="900" height="470" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <rect width="900" height="470" fill="#ffffff"/>
+
+  <defs>
+    <marker id="a3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#94a3b8"/>
+    </marker>
+  </defs>
+
+  <!-- ================= INGEST ================= -->
+  <text x="20" y="32" font-size="12" font-weight="700" fill="#94a3b8" letter-spacing="1.2">INGEST</text>
+
+  <rect x="20" y="46" width="104" height="52" rx="6" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5"/>
+  <text x="72" y="70" font-size="12" fill="#475569" text-anchor="middle">scanned</text>
+  <text x="72" y="86" font-size="12" fill="#475569" text-anchor="middle">PDF page</text>
+
+  <rect x="156" y="46" width="128" height="52" rx="6" fill="#e8f1fe" stroke="#1d4ed8" stroke-width="1.5"/>
+  <text x="220" y="70" font-size="12" fill="#14346e" text-anchor="middle">rasterize</text>
+  <text x="220" y="86" font-size="11" fill="#1e40af" text-anchor="middle">150–200 DPI</text>
+
+  <rect x="316" y="46" width="164" height="52" rx="6" fill="#e8f1fe" stroke="#1d4ed8" stroke-width="1.5"/>
+  <text x="398" y="70" font-size="12" fill="#14346e" text-anchor="middle">layout model</text>
+  <text x="398" y="86" font-size="11" fill="#1e40af" text-anchor="middle">figure / table region crops</text>
+
+  <rect x="512" y="46" width="104" height="52" rx="6" fill="#e8f1fe" stroke="#1d4ed8" stroke-width="1.5"/>
+  <text x="564" y="70" font-size="12" fill="#14346e" text-anchor="middle">OCR</text>
+  <text x="564" y="86" font-size="11" fill="#1e40af" text-anchor="middle">text layer</text>
+
+  <rect x="648" y="46" width="232" height="52" rx="6" fill="#f5ecfe" stroke="#7c3aed" stroke-width="1.6"/>
+  <text x="764" y="70" font-size="12.5" font-weight="600" fill="#4c1d95" text-anchor="middle">Cohere Embed v4</text>
+  <text x="764" y="86" font-size="11" fill="#6d28d9" text-anchor="middle">multimodal — embeds the PIXELS</text>
+
+  <g stroke="#94a3b8" stroke-width="1.6" marker-end="url(#a3)">
+    <line x1="126" y1="72" x2="150" y2="72"/>
+    <line x1="286" y1="72" x2="310" y2="72"/>
+    <line x1="482" y1="72" x2="506" y2="72"/>
+    <line x1="618" y1="72" x2="642" y2="72"/>
+  </g>
+
+  <!-- ================= STORES ================= -->
+  <rect x="20" y="164" width="228" height="62" rx="6" fill="#fef4c7" stroke="#d97706" stroke-width="1.6"/>
+  <text x="134" y="188" font-size="12.5" font-weight="600" fill="#8a4b06" text-anchor="middle">S3</text>
+  <text x="134" y="207" font-size="11" fill="#8a4b06" text-anchor="middle">page &amp; region images kept as</text>
+  <text x="134" y="220" font-size="11" fill="#8a4b06" text-anchor="middle">first-class assets</text>
+
+  <rect x="288" y="164" width="592" height="62" rx="6" fill="#eef2f7" stroke="#475569" stroke-width="1.6"/>
+  <text x="306" y="187" font-size="12.5" font-weight="600" fill="#1e293b">OpenSearch — one document per page (and per region crop)</text>
+  <text x="306" y="211" font-size="11.5" fill="#475569">ocr_text (BM25)  ·  mm_embedding (kNN, 1024-dim)  ·  page_image_uri  ·  doc_id / page_no</text>
+
+  <g stroke="#94a3b8" stroke-width="1.6" marker-end="url(#a3)">
+    <path d="M 220 100 L 220 132 L 134 132 L 134 160" fill="none"/>
+    <path d="M 398 100 L 398 132 L 134 132" fill="none" marker-end="none"/>
+    <path d="M 564 100 L 564 132 L 584 132 L 584 160" fill="none"/>
+    <path d="M 764 100 L 764 132 L 700 132 L 700 160" fill="none"/>
+  </g>
+
+  <!-- ================= QUERY ================= -->
+  <text x="20" y="292" font-size="12" font-weight="700" fill="#94a3b8" letter-spacing="1.2">QUERY</text>
+
+  <rect x="20" y="306" width="80" height="52" rx="6" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5"/>
+  <text x="60" y="337" font-size="12" fill="#475569" text-anchor="middle">question</text>
+
+  <rect x="118" y="306" width="86" height="52" rx="6" fill="#f5ecfe" stroke="#7c3aed" stroke-width="1.5"/>
+  <text x="161" y="337" font-size="12" fill="#4c1d95" text-anchor="middle">embed</text>
+
+  <rect x="222" y="306" width="176" height="52" rx="6" fill="#eef2f7" stroke="#475569" stroke-width="1.5"/>
+  <text x="310" y="330" font-size="12" font-weight="600" fill="#1e293b" text-anchor="middle">hybrid  BM25 ⊕ kNN</text>
+  <text x="310" y="347" font-size="11" fill="#475569" text-anchor="middle">RRF fused · top 100–200</text>
+
+  <rect x="416" y="306" width="152" height="52" rx="6" fill="#eef2f7" stroke="#475569" stroke-width="1.5"/>
+  <text x="492" y="330" font-size="12" font-weight="600" fill="#1e293b" text-anchor="middle">rerank</text>
+  <text x="492" y="347" font-size="11" fill="#475569" text-anchor="middle">cross-encoder, top-k</text>
+
+  <rect x="586" y="306" width="140" height="52" rx="6" fill="#fef4c7" stroke="#d97706" stroke-width="1.6"/>
+  <text x="656" y="330" font-size="12" font-weight="600" fill="#8a4b06" text-anchor="middle">top 3–8 page</text>
+  <text x="656" y="347" font-size="12" font-weight="600" fill="#8a4b06" text-anchor="middle">IMAGES</text>
+
+  <rect x="744" y="306" width="136" height="52" rx="6" fill="#f5ecfe" stroke="#7c3aed" stroke-width="1.6"/>
+  <text x="812" y="330" font-size="12" font-weight="600" fill="#4c1d95" text-anchor="middle">generator</text>
+  <text x="812" y="347" font-size="11" fill="#6d28d9" text-anchor="middle">images + OCR</text>
+
+  <g stroke="#94a3b8" stroke-width="1.6" marker-end="url(#a3)">
+    <line x1="102" y1="332" x2="112" y2="332"/>
+    <line x1="206" y1="332" x2="216" y2="332"/>
+    <line x1="400" y1="332" x2="410" y2="332"/>
+    <line x1="570" y1="332" x2="580" y2="332"/>
+    <line x1="728" y1="332" x2="738" y2="332"/>
+    <path d="M 584 230 L 584 268 L 310 268 L 310 302" fill="none"/>
+    <path d="M 134 230 L 134 268 L 656 268 L 656 302" fill="none"/>
+  </g>
+
+  <rect x="744" y="382" width="136" height="34" rx="6" fill="#f0fdf4" stroke="#0f766e" stroke-width="1.5"/>
+  <text x="812" y="403" font-size="11.5" font-weight="600" fill="#0f766e" text-anchor="middle">cited {doc, page}</text>
+  <line x1="812" y1="360" x2="812" y2="378" stroke="#94a3b8" stroke-width="1.6" marker-end="url(#a3)"/>
+
+  <text x="20" y="400" font-size="11.5" fill="#94a3b8">The page image reaches the generator, so answers are read off the chart rather than off a caption of it.</text>
+  <text x="20" y="440" font-size="11.5" fill="#94a3b8">Dense and lexical retrieval share one index; region crops buy precision and tighter citations.</text>
+</svg>

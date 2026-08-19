@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 720" width="820" height="720" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <rect width="820" height="720" fill="#ffffff"/>
+
+  <defs>
+    <marker id="arw" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#94a3b8"/>
+    </marker>
+  </defs>
+
+  <!-- legend -->
+  <rect x="20" y="14" width="13" height="13" rx="2" fill="#e8f1fe" stroke="#1d4ed8" stroke-width="1.5"/>
+  <text x="39" y="25" font-size="12" fill="#475569">deterministic CV — owns all geometry</text>
+  <rect x="288" y="14" width="13" height="13" rx="2" fill="#f5ecfe" stroke="#7c3aed" stroke-width="1.5"/>
+  <text x="307" y="25" font-size="12" fill="#475569">VLM — labels &amp; types only, never coordinates</text>
+  <rect x="646" y="14" width="13" height="13" rx="2" fill="#fef4c7" stroke="#d97706" stroke-width="1.5"/>
+  <text x="665" y="25" font-size="12" fill="#475569">file artifact</text>
+
+  <!-- arrows down the spine -->
+  <g stroke="#94a3b8" stroke-width="1.6" marker-end="url(#arw)">
+    <line x1="190" y1="106" x2="190" y2="138"/>
+    <line x1="190" y1="186" x2="190" y2="218"/>
+    <line x1="190" y1="266" x2="190" y2="298"/>
+    <line x1="190" y1="346" x2="190" y2="378"/>
+    <line x1="190" y1="426" x2="190" y2="458"/>
+    <line x1="190" y1="506" x2="190" y2="538"/>
+    <line x1="190" y1="586" x2="190" y2="618"/>
+  </g>
+
+  <!-- artifact pills -->
+  <g font-size="11.5" text-anchor="middle">
+    <rect x="205" y="112" width="140" height="20" rx="10" fill="#fef4c7" stroke="#d97706" stroke-width="1"/>
+    <text x="275" y="126" fill="#8a4b06">masks.npz</text>
+    <rect x="205" y="192" width="140" height="20" rx="10" fill="#fef4c7" stroke="#d97706" stroke-width="1"/>
+    <text x="275" y="206" fill="#8a4b06">plan.json</text>
+    <rect x="205" y="432" width="140" height="20" rx="10" fill="#fef4c7" stroke="#d97706" stroke-width="1"/>
+    <text x="275" y="446" fill="#8a4b06">plan.scaled.json</text>
+    <rect x="205" y="592" width="140" height="20" rx="10" fill="#fef4c7" stroke="#d97706" stroke-width="1"/>
+    <text x="275" y="606" fill="#8a4b06">plan.ifc</text>
+  </g>
+
+  <!-- ============ stage rows ============ -->
+  <!-- 1 parse -->
+  <rect x="40" y="60" width="300" height="46" rx="6" fill="#e8f1fe" stroke="#1d4ed8" stroke-width="1.6"/>
+  <text x="58" y="89" font-size="15" font-weight="600" fill="#14346e">parse</text>
+  <text x="360" y="79" font-size="12" fill="#475569">One multi-task model → wall masks, rooms, opening heatmaps</text>
+  <text x="360" y="96" font-size="12" fill="#475569">Tiled at full resolution — walls are only 3–10 px wide</text>
+
+  <!-- 2 vectorize -->
+  <rect x="40" y="140" width="300" height="46" rx="6" fill="#e8f1fe" stroke="#1d4ed8" stroke-width="1.6"/>
+  <text x="58" y="169" font-size="15" font-weight="600" fill="#14346e">vectorize</text>
+  <text x="360" y="159" font-size="12" fill="#475569">skeletonize → axis-snap → merge → junction-snap</text>
+  <text x="360" y="176" font-size="12" fill="#475569">Centerlines + thickness (distance transform); Shapely rooms</text>
+
+  <!-- 3 vlm-enrich -->
+  <rect x="40" y="220" width="300" height="46" rx="6" fill="#f5ecfe" stroke="#7c3aed" stroke-width="1.6"/>
+  <text x="58" y="249" font-size="15" font-weight="600" fill="#4c1d95">vlm-enrich</text>
+  <text x="360" y="239" font-size="12" fill="#475569">Writes room labels and door/window types — nothing else</text>
+  <text x="360" y="256" font-size="12" fill="#475569">Schema-validated JSON; on any failure the CV result stands</text>
+
+  <!-- 4 overlay -->
+  <rect x="40" y="300" width="300" height="46" rx="6" fill="#e8f1fe" stroke="#1d4ed8" stroke-width="1.6"/>
+  <text x="58" y="329" font-size="15" font-weight="600" fill="#14346e">overlay</text>
+  <text x="360" y="319" font-size="12" fill="#475569">Renders the recovered model back over the source drawing</text>
+  <text x="360" y="336" font-size="12" fill="#475569">Feeds both the narrated reveal and the QA comparison</text>
+
+  <!-- 5 scale -->
+  <rect x="40" y="380" width="300" height="46" rx="6" fill="#e8f1fe" stroke="#1d4ed8" stroke-width="1.6"/>
+  <text x="58" y="403" font-size="15" font-weight="600" fill="#14346e">scale</text>
+  <text x="58" y="418" font-size="10.5" fill="#7c3aed">+ optional VLM scale reading (backstop)</text>
+  <text x="360" y="399" font-size="12" fill="#475569">Pixel-authoritative: px geometry, parallel *_mm fields</text>
+  <text x="360" y="416" font-size="12" fill="#475569">No scale → parks as awaiting_scale and asks, never guesses</text>
+
+  <!-- 6 furnish -->
+  <rect x="40" y="460" width="300" height="46" rx="6" fill="#e8f1fe" stroke="#1d4ed8" stroke-width="1.6"/>
+  <text x="58" y="489" font-size="15" font-weight="600" fill="#14346e">furnish</text>
+  <text x="360" y="479" font-size="12" fill="#475569">Deterministic layout from mm templates + Shapely collisions</text>
+  <text x="360" y="496" font-size="12" fill="#475569">Items the user touches become pinned and survive re-layout</text>
+
+  <!-- 7 ifc -->
+  <rect x="40" y="540" width="300" height="46" rx="6" fill="#e8f1fe" stroke="#1d4ed8" stroke-width="1.6"/>
+  <text x="58" y="569" font-size="15" font-weight="600" fill="#14346e">ifc</text>
+  <text x="360" y="559" font-size="12" fill="#475569">IFC4 hierarchy + enrichment: fixtures, finish floors, materials,</text>
+  <text x="360" y="576" font-size="12" fill="#475569">hip roof as a distance-transform heightfield, exterior envelope</text>
+
+  <!-- 8 vlm-qa -->
+  <rect x="40" y="620" width="300" height="46" rx="6" fill="#f5ecfe" stroke="#7c3aed" stroke-width="1.6" stroke-dasharray="5 3"/>
+  <text x="58" y="649" font-size="15" font-weight="600" fill="#4c1d95">vlm-qa</text>
+  <text x="360" y="639" font-size="12" fill="#475569">Advisory only — writes nothing into the model</text>
+  <text x="360" y="656" font-size="12" fill="#475569">Discrepancy report comparing the overlay against the original</text>
+
+  <text x="40" y="700" font-size="11.5" fill="#94a3b8">Stages are coupled only through files on disk, so every stage is independently inspectable and re-runnable.</text>
+</svg>
