@@ -6,7 +6,7 @@ permalink: /projects/blueprint-knowledge-3d/
 
 # 📐 Blueprint Knowledge and 3D Representation
 
-### Multimodal retrieval over scanned drawings, and a VLM agent that turns floor plans into IFC/BIM
+### Multimodal retrieval over scanned drawings, and a hybrid CV + VLM pipeline that turns floor plans into IFC/BIM
 
 **Date:** 2026
 
@@ -14,20 +14,20 @@ permalink: /projects/blueprint-knowledge-3d/
 
 ## Overview
 
-Two pieces of work, one thesis: **the moment you flatten a visual document into text, you throw away the answer.**
+Two pieces of work, one thesis: **the moment you flatten a visual document into text, you throw away the answer — and the moment you let a language model produce coordinates, you throw away correctness.**
 
-A chart encodes dozens of quantitative relationships. A floor plan encodes topology, dimensions, and drafting conventions. Both are routinely fed to AI systems that immediately collapse them into a sentence of prose — and then wonder why the answers are vague or fabricated. Both workstreams below attack that same failure from opposite ends: one keeps pixels in the *retrieval* path, the other keeps the vision model out of the *geometry* path.
+A chart encodes dozens of quantitative relationships. A floor plan encodes topology, dimensions, and drafting conventions. Both are routinely fed to AI systems that immediately collapse them into prose — and then wonder why the answers are vague or fabricated. Both workstreams below attack that same failure from opposite ends: one keeps pixels in the *retrieval* path, the other keeps the vision model out of the *geometry* path.
 
 | Workstream | Status | What it is |
 | --- | --- | --- |
 | **1. Blueprint knowledge** | Architecture diagnosis + design proposal, with staged rollout and eval plan | Replacing a caption-and-index pipeline with true multimodal embeddings at 1M+ page scale on OpenSearch/Bedrock |
-| **2. 3D representation** | Built PoC, quality measured rather than asserted | Raster 間取り図 → real IFC model, refined by bilingual chat, opens in Revit |
+| **2. 3D representation** | Built PoC, demo-complete end to end; licensing and accuracy gaps named up front | Scanned floor plan → IFC4 model via deterministic CV geometry plus a VLM semantic layer, wrapped in an agent UX with narrated conversion, approval-gated edits, renders, and quantity takeoff |
 
 Three convictions run through both:
 
 - **Keep the visual signal.** Embed pixels, and put the actual image in front of the model at answer time — don't let a caption stand in for the page.
-- **The model produces a schema, not an artifact.** Constrain generation to a validated structure and let deterministic, unit-tested code produce the final output.
-- **Measure the claim.** Both workstreams are built around an evaluation harness, and both report the axis where they're weak instead of hiding it.
+- **Confine the model to what it is actually good at.** In the BIM pipeline the vision model may write a room label or an opening type and **never a coordinate**; deterministic code owns every number. Judgment to the LLM, arithmetic to plain code.
+- **Name the gap.** Workstream 1 is built around an evaluation harness before any migration. Workstream 2 states plainly what is *not* yet proven — no formal accuracy metrics, a non-commercial model license, a test suite not yet in CI — because a PoC that reports only its successes hasn't tested anything.
 
 ---
 
@@ -129,162 +129,156 @@ Being the person who flags this is part of the deliverable:
 
 ---
 
-## Part 2 — 3D Representation: Floor Plan → BIM with a VLM Agent
+## Part 2 — 3D Representation: Floor Plan → BIM with a Hybrid CV + VLM Pipeline
 
-### The question, and the honest answer
+### The question, and the architectural answer
 
-**Can an AI agent convert a residential floor plan image into a real, correctable BIM model — with nobody touching a CAD tool?**
+**Can a scanned residential floor plan become a usable BIM model automatically — and what does an agent-driven UX around that conversion feel like?** Both are demonstrated end to end on real plans.
 
-Yes, with one measured caveat.
+The answer that actually matters is *where the AI belongs*.
 
-Upload a raster 間取り図. In about a minute you get a finished-looking house — colored walls on the Japanese module grid, a gable roof with eaves, glazed windows, wood floors, furniture in the rooms — as a genuine **IFC file that opens in Revit with its colors and millimeter units intact**. You then refine it by chatting, in Japanese or English (*"外壁を濃紺に塗って"*, *"delete the wall between the LDK and the bedroom"*, *"total floor area?"*), and every edit regenerates the same IFC.
+The obvious design is to ask a vision model for wall coordinates and extrude them. We built that, measured it, and **rejected it permanently**: coordinates came back with **5–15% error**, along with hallucinated walls and broken topology. A BIM file is a geometric contract, not a draft — 5% on a wall position isn't "close", it's unusable downstream.
 
-**The caveat is the PoC's central research finding:** extraction is *strong on structure* — walls, topology, room labels, dimensions — and *weak on opening placement*. Door and window positions jitter run-to-run by roughly **±20% along their wall**, and one evaluation run **hallucinated an interior door** that wasn't on the plan. That's measured by a built-in eval script that renders overlays for direct comparison, not asserted from vibes. A known, quantified limitation beats a hidden defect.
+So the architecture is a **hybrid split**:
 
-### Why the naive approach fails
+- A **deterministic computer-vision engine owns all geometry** — wall centerlines and thicknesses, room polygons, opening positions.
+- A **vision-language model sits on top as a semantic layer** — labeling rooms, classifying doors vs. windows, reading scale annotations, reviewing quality.
 
-"Ask a vision model for coordinates and extrude them" produces a wobbly mess: walls inset by half a thickness, dimensions ~1% short, lines near-but-not-quite orthogonal. Three choices turn that into credible geometry.
+That buys the reliability of classical CV with the flexibility of an LLM confined to the judgments it's genuinely good at. **The VLM never writes a coordinate**, and that invariant is enforced by a test rather than by code-review discipline.
 
-**a) A semantic intermediate representation, not a mesh.** The AI never produces geometry. It produces a **Plan Model** — and everything downstream is deterministic and unit-tested:
-
-```
-PlanModel
-└── storeys: [Storey]                    # 1 today; a 2nd storey is additive
-    ├── name, ceiling_height_mm
-    ├── walls:     [Wall{id, start(x,y), end(x,y), thickness_mm}]   # centerlines, mm
-    ├── openings:  [Opening{id, wall_id, kind: door|window,
-    │                       offset_mm, width_mm, sill_mm, height_mm}]
-    ├── rooms:     [Room{id, label, polygon: [(x,y)]}]
-    ├── furniture: [Furniture{id, kind, position, rotation_deg}]     # 9-kind catalog
-    ├── finishes:  Finishes{wall_colors, floors}
-    └── roof:      Roof{pitch_deg, overhang_mm, color}
-```
-
-Millimeters everywhere, origin at the building's bottom-left exterior corner. **Walls are centerlines and openings are offsets along them**, so moving a wall moves its openings for free. Missing finishes fall back to Palette defaults at generation time, so operations never have to remember to paint things — a small convention that removes a whole class of bug.
-
-**b) Deterministic post-processing that exploits domain structure.** Japanese residential plans sit on the 910mm 尺 module, so coordinates snap to its 455mm half-module — and that converts jitter into *correctness*. Raw model output of `60 / 7220 / 5400` reliably becomes exactly `0 / 7280 / 5460`. Three passes, in order:
-
-| Pass | Rule | Why |
-| --- | --- | --- |
-| **Orthogonalize** | Walls within 7° of an axis become axis-aligned | Near-orthogonal is always a drafting artifact |
-| **Join** | Endpoints within 250mm cluster to their centroid | Walls that should share a corner, don't quite |
-| **Snap** | Every coordinate to the 455mm half-module | Turns jitter into exact modular dimensions |
-
-Opening offsets are then remapped to **preserve absolute plan position** while their wall moves underneath them, clamped inside the wall, and dropped if wider than it.
-
-**c) A bounded operation set for edits.** The refinement agent cannot write arbitrary code or emit coordinates freely. It calls **18 validated pure functions** (`PlanModel → PlanModel`). An invalid edit returns a domain error the agent can read and retry against — *"No wall with id 'w-x'. Walls in the model: …"*.
-
-The result: **two LLM calls in the entire system.** Everything else is deterministic, tested Python.
+Scope was locked at kickoff — single-storey, orthogonal ("Manhattan"), clean residential plans; IFC4 output with walls, doors/windows, slab, and spaces — then deliberately *extended* mid-PoC (via ADR-0001) to cover **model enrichment**, because the demo target is a finished-looking home rather than bare walls. Enrichment follows the same rule: every placement is computed deterministically, and the LLM never invents geometry.
 
 ### The pipeline
 
-| Stage | What happens | Notable decision |
-| --- | --- | --- |
-| **Extraction** | One vision call via `messages.parse` with a Pydantic schema; calibrates scale from dimension text → 帖 labels → the 910mm module, in that reliability order | The schema *is* the domain model — one definition, no drift, and **zero JSON parsing or repair code** |
-| **Post-processing** | Orthogonalize → join → snap → opening remap | The 455mm snap is the highest-leverage line in the system |
-| **Palette** | Exterior walls (centerline on the footprint perimeter — post-snap this test is *exact*) get siding; floors from bilingual label heuristics (和室/畳 → tatami, 浴/トイレ/WC → tile, else wood) | Named `IfcMaterial` records are the join key for the viewer's texture layer *and* independently useful to external BIM tools |
-| **Auto-furnish** | Rooms the plan didn't furnish get filled from a 9-item catalog, placed against a wall, clear of door/window spans and other furniture | Rule-based, and nothing outside the catalog can exist |
-| **IFC generation** | `IfcOpenShell` authoring: walls with `IfcOpeningElement` cuts, `IfcDoor`/`IfcWindow` via `IfcRelFillsElement`, `IfcCovering` floor plates, `IfcSlab`, `IfcRoof` gable prism, correctly-typed `IfcFurniture`/`IfcSanitaryTerminal`, deduplicated `IfcSurfaceStyle` | Real IFC authoring, not a text templater |
-| **Staged Reveal** | The UI draws findings back over the original image — walls → openings → rooms → 2D fades to 3D — driven by NDJSON **Narration** events | Narration is **computed from Plan Model data, not generated**: no extra LLM call, no latency, no hallucination risk. It never enters the agent's context |
-
-The **#1 trap for future contributors**, documented because it cost real time: two unit conventions coexist inside IfcOpenShell — `ifcopenshell.api.geometry` helpers take SI **meters** and convert internally, while `ShapeBuilder` takes project units (**mm**) raw. Both were verified empirically with probe scripts, and tests pin the behavior.
-
-### The refinement agent
-
-A **manual tool-use loop** rather than the SDK's runner — deliberate, because the model client is the faking seam for tests, and a manual loop keeps every request and response visible to them:
+Eight stages that communicate **only through files on disk** (`masks.npz → plan.json → plan.scaled.json → plan.ifc`), which makes every stage independently inspectable and re-runnable:
 
 ```
-history += user message (+ Plan Model JSON snapshot in <plan_model> tags;
-                         + the original plan image, first turn only)
-loop (max 8):
-    response = model(system, tools, history)
-    if stop_reason != tool_use: break
-    for each tool_use: apply operation  (errors → tool_result is_error, agent reacts)
-if anything mutated: regenerate IFC
+parse → vectorize → vlm-enrich → overlay → scale → furnish → ifc → vlm-qa
+└─ CV geometry ──┘   └─ VLM ──┘            └── deterministic ──┘   └ VLM ┘
+                     (labels/types only)                          (advisory)
 ```
 
-Keeping the original plan image in the conversation is what makes *"図面の通りに戻して"* ("restore it as drawn on the plan") work without re-running extraction. The **operation registry** is the single place an operation exists — description + JSON schema + pure-function handler + `mutates` flag — so the agent's tool list derives from it and adding a capability is one entry.
-
-| Group | Operations |
+| Stage | What happens |
 | --- | --- |
-| Walls | `add_wall`, `delete_wall`, `move_wall`, `set_wall_thickness` |
-| Openings | `add_opening`, `delete_opening`, `move_opening`, `resize_opening`, `set_opening_kind` |
-| Rooms & storey | `relabel_room`, `set_ceiling_height` |
-| Appearance | `paint_wall`, `set_room_floor`, `configure_roof` |
-| Furniture | `add_furniture` (auto-places if no position given), `move_furniture`, `delete_furniture` |
-| Read-only | `get_model_summary` — areas in m² and 帖, counts, finishes, roof, furniture per room |
+| **parse** | One pretrained multi-task model (CubiCasa5K) yields wall masks, room segmentation, and door/window heatmaps in a single inference. Large plans are **tiled at high resolution rather than downscaled** — walls are only 3–10 px wide, so downscaling erases the very thing being detected |
+| **vectorize** | skeletonize → axis-snap → merge → junction-snap turns masks into wall centerlines, with thickness from the distance transform; rooms via connected components + Shapely; fixtures (toilet, sink, bathtub, appliance) read from the model's icon channels |
+| **scale** | The pipeline is **pixel-authoritative** — geometry stays in px and scaling fills parallel `*_mm` fields. With no resolved scale the API **parks** the conversion (`awaiting_scale`) and asks the user instead of guessing |
+| **furnish** | A pure, deterministic layout engine places furniture per room label from mm-space templates with Shapely collision checks. The one deliberate exception to pixel-authority: furniture is mm-authoritative and back-projected to px for the overlay |
+| **ifc** | IfcOpenShell builds the IFC4 hierarchy plus enrichment — procedural part compositions for fixtures and furniture (LOD ~200, no mesh assets), per-room finish floors, materials, a **hip roof computed as a distance-transform heightfield** (height = pitch × distance to footprint boundary, so it works on any Manhattan footprint), and exterior extras: siding, garage door, porch, walkway aprons |
 
-### The four load-bearing decisions
+### The VLM semantic layer
 
-Each recorded as an ADR, because these are the choices everything else implements:
+Four structured-output roles, each returning schema-validated JSON (`messages.parse` + Pydantic) — never free text, never coordinates:
 
-- **ADR-0001 — The viewer renders the IFC itself.** There is no separate 3D scene built from the Plan Model; the browser loads the exact bytes the backend generated. One geometry path, so the screen cannot drift from the exported file — which makes the BIM claim *literal*. The price, stated: a mandatory Python backend and a sub-second IFC round trip on every mutating edit.
-- **ADR-0002 — Appearance is IFC-native; polish is viewer-side.** Anything describing the *building* (roof, door panels, glazing, paint, floor materials) lives in the IFC as surface styles so it survives into Revit. Anything describing the *presentation* (background, shadows, roof toggle) is viewer-side.
-- **ADR-0003 — Textures keyed by the file's Material names.** Run **spike-first with an explicit timebox and a written go/no-go**: the spike found the viewer's batched geometry carries no UV attribute (so `material.map` was impossible) and same-colored elements batch into one mesh (so per-element override was impossible). What worked was `onBeforeCompile` injection of world-space **triplanar** sampling, verified with a checkerboard before any real texture was drawn. The ADR knowingly relaxes ADR-0001 for appearance only — and records the resulting limitation, that elements recolored away from Palette defaults render flat.
-- **ADR-0004 — Model spend runs through a Bedrock application inference profile.** Organizational policy requires spend attributable to a cost centre, which only an application inference profile carries. The consequence worth recording: **there is deliberately no default model id.** A missing `BIM_AGENT_MODEL` refuses to start the server, because the tempting fallback to a public profile is exactly the wrong failure mode — it would keep working while quietly running a different model on untagged spend.
+| Role | Stage | What it may write |
+| --- | --- | --- |
+| **Room labeling** | vlm-enrich | `room.label` only — corrects the CV model's regionally-biased labels using the source image plus an ID-annotated render |
+| **Opening classification** | vlm-enrich | `opening.type` only — door / window / generic, from image crops |
+| **Scale reading** | scale (opt-in) | A scale *reference* (two pixel endpoints + real mm) fed into the same deterministic converter as manual input — a backstop, never the primary |
+| **QA review** | vlm-qa | **Nothing in the model.** An advisory discrepancy report (`qa_report.md`) comparing the overlay against the original drawing |
 
-### Findings
+Three operating principles, each enforced by a test:
 
-1. **Structure extraction is strong** — 5/5 walls with correct topology, all rooms correctly labeled, and after grid snapping the exact 7280×5460mm dimensions. Western-style and English-labeled plans also work via the bilingual heuristics.
-2. **Opening placement is the weak axis** — ~±20% run-to-run jitter along the wall, plus one hallucinated interior door. The eval overlay makes such errors visible at a glance.
-3. **The 455mm grid snap is load-bearing** — the single highest-leverage piece of code in the system.
-4. **Chat refinement is dependable** — the agent resolves natural-language references ("exterior walls", room names) to element operations correctly, works bilingually, and plan-grounded restore requests reproduce geometry from the image.
-5. **The IFC round trip holds** — colors authored as IFC surface styles render in the browser *and* persist in the downloaded file.
-6. **Structured output eliminated an entire error class** — because the Pydantic schema is enforced by the SDK, there is no JSON repair code anywhere. The historical failure mode of LLM-to-structured-data pipelines simply doesn't exist here.
+- **Degrade, never crash.** Any API or schema failure leaves the CV result in place. With no credentials at all, the whole pipeline runs CV-only.
+- **Adapter seam.** Every call goes through a `VlmClient` adapter, so a local or self-hosted VLM can replace the hosted one for confidential deployments without touching role logic. That path is designed in, not bolted on later.
+- **Two credential paths.** A first-party API key (default model `claude-opus-5`, switchable by env var) or an AWS Bedrock inference profile, which keeps traffic inside our own account and is usually the easier compliance story. Bedrock takes precedence when set.
+
+### Two deliverables, one demo
+
+| Deliverable | Stack | What it does |
+| --- | --- | --- |
+| **Floor plan → BIM pipeline** (`f2b` CLI + HTTP API) | Python 3.11 · PyTorch · OpenCV · Shapely · IfcOpenShell · FastAPI | Image → masks → vector model → scaled model → IFC4, exposed as a CLI and as sync and async (SSE-narrated) HTTP endpoints |
+| **BIM viewer module** | TypeScript pnpm monorepo · Fastify · ThatOpen Fragments · React · three.js | Stateless IFC → `.frag` conversion service (worker-thread pool) plus embeddable React viewer components — viewer, properties panel, screenshot API |
+
+```
+image → [f2b pipeline] → plan.ifc → [converter POST /jobs] → plan.frag → [<BimViewer>]
+```
+
+The converter is **stateless and unauthenticated by design**, with an in-memory job registry — a restart loses jobs and clients resubmit — so it must sit behind the host product's gateway. All config is environment variables, and internal paths never leak into responses. The version-coupled viewer dependencies (`three` / `web-ifc` / `@thatopen/*`) are pinned centrally in the workspace catalog because they have to move together.
+
+### The agent experience
+
+Built in phases, each merged to main:
+
+| Phase | Capability | How it works |
+| --- | --- | --- |
+| **1** | **Narrated conversion** | An async endpoint returns an SSE stream; a read-only Narrator maps pipeline checkpoints to agent events (tool chips, artifacts, metrics), replayable via `Last-Event-ID`. Conversions lacking a scale park and later resume |
+| **2a** | **Natural-language edits behind approval gates** | The model runs a tool loop over *deterministic* edit operations — it picks the operation and parameters symbolically, Shapely computes the geometry, and **every mutation requires explicit user approval in the UI** |
+| **2b** | **Wall topology** | Room merge and split with adjacency plus sliver/notch guards, on the same approval-gated pattern |
+| **3** | **Photoreal rendering** | A `render_image` tool requests a viewer screenshot through a capture gate, then a Gemini image model restyles it. Degrades to a friendly message without a key |
+| **4a** | **Estimates** | A pure, LLM-free quantity takeoff over the scaled plan × unit costs → cost chip, estimate panel, and a read-only `get_takeoff` tool |
+| **5a** | **Interior enrichment** | Drawing-detected fixtures, deterministic furniture layout, materials, finish floors, door/window detail — plus furniture edit tools where touched items become **pinned** and survive re-layout |
+| **5b** | **Exterior enrichment** | Hip roof with a viewer toggle, siding, garage door, porch and walkway aprons |
+
+**Why the edit design matters:** every edit the agent can make is a **named, deterministic, approval-gated operation**. The LLM chooses *what* to do; plain code computes *where*. That keeps the no-VLM-geometry invariant intact even on the interactive path, and makes every mutation auditable.
 
 ### Engineering quality
 
-**136 automated tests, all passing** — roughly 0.8 lines of test per line of backend source. The strategy is **seam-based**, with no mocking below one boundary:
+- **356 Python tests, all hermetic** — no model weights, no API keys, no network. The full suite runs in about **5 seconds**, with VLM calls dependency-injected and faked. Fast and offline is what makes a test suite actually get run.
+- **JavaScript side:** unit and integration tests per package plus **12 Playwright end-to-end specs** covering the real demo flows — upload → narrate → scale-park → resume → edit → estimate.
+- **Invariants are executable.** An `invariants.md` document pairs each golden rule — VLM never touches geometry, degrade-never-crash, pixel-authority, the licensing boundary, takeoff purity — with the specific test or grep that enforces it. A rule nothing checks is a comment, not an invariant.
+- **Known gap, stated:** CI runs the JS build, tests, and e2e, but the **Python suite is not in CI yet** — it runs locally per merge.
 
-```
-┌──────────────────────────────────────────────────────────────────┐
-│ HTTP seam (primary): FastAPI TestClient drives real routes.      │
-│ The ONLY fake is the model client. Post-processing, Palette,      │
-│ auto-furnish, operations, IFC generation and session state all    │
-│ run for real.                                                     │
-├──────────────────────────────────────────────────────────────────┤
-│ Pure-function seams: post-processing, every operation, palette    │
-│ classification, quantities, roof geometry, furniture placement.    │
-├──────────────────────────────────────────────────────────────────┤
-│ IFC parse-back seam: generated bytes are re-parsed with           │
-│ IfcOpenShell and asserted structurally — element counts, fill     │
-│ relationships, style colors, extrusion depths, mm units.          │
-├──────────────────────────────────────────────────────────────────┤
-│ LLM quality: NOT a CI gate. An opt-in eval script runs real       │
-│ Extraction over samples/ and writes a report + overlays.          │
-└──────────────────────────────────────────────────────────────────┘
-```
+### Licensing is a first-class engineering constraint
 
-Two techniques worth stealing:
+The most consequential finding in the PoC isn't geometric, it's legal — and it was surfaced early rather than at commercialization:
 
-- **A negative assertion made cheap and exact.** *"No IFC regeneration happened"* is asserted by byte-identical `GET /api/ifc` responses — any regeneration would mint new random GlobalIds. That's how read-only chat turns are proven side-effect-free.
-- **IFC asserted structurally by re-parsing, never by golden file.** Random GlobalIds would make byte comparison flap forever.
+| Component | License | Verdict |
+| --- | --- | --- |
+| **CubiCasa5K** (code, dataset, weights) | CC BY-NC 4.0 | **Demo/PoC only — not commercially shippable.** Vendored behind a single-importer boundary so it can be swapped |
+| MitUNet (production candidate) | Code MIT · checkpoint CC BY-NC | Architecture is clean; the **checkpoint must be retrained** on ~200–500 self-annotated or licensed plans |
+| IfcOpenShell · OpenCV · Shapely · scikit-image · PyTorch · FastAPI | LGPL / Apache / BSD / MIT | Clean for commercial use (keep IfcOpenShell dynamically linked) |
+| Viewer stack (three.js, ThatOpen) | MIT | Clean |
+| web-ifc | MPL-2.0 | File-level copyleft — safe consumed unmodified via npm; flag in client-facing notes |
+| Ultralytics YOLO | AGPL | Deliberately avoided, with a repo guard against reintroduction |
 
-And a deliberate gap, named as such: **LLM output quality is not a CI gate.** Correct for a PoC — it would make the suite slow, costly, and flaky — but it means prompt changes are currently unguarded, which is why wiring the existing eval script into a regression gate is the top next step.
+The parser being non-commercial is a blocking constraint on shipping, so the architecture **anticipates the swap**: one importer boundary, one retraining task, no rewrite. Naming that in the executive summary rather than burying it is the difference between a PoC that informs a roadmap and one that produces an unpleasant surprise.
 
-### Limitations and scope boundaries
+**Data egress**, likewise scoped: two external calls exist, both acceptable here because the PoC uses **public plans only** — floor plan images go to the model API (or to Bedrock inside our own account), and viewer screenshots (renders of the 3D model, not the source drawing) go to an image model for restyling. A deployment on confidential client drawings must reconfirm policy or swap in a local VLM through the adapter seam.
 
-Out of scope by choice: cost estimates and construction documents; hip roofs (寄棟), ceilings, per-face wall painting; stairs, columns/beams, site, multi-storey (the schema is storey-additive, so a second floor is additive work, not a rewrite); CAD input (DWG/DXF/JWW) and hand-drawn sketches; robustness on uncurated uploads — *graceful failure* on bad input is in scope, *good results* are not; persistence, auth, deployment, multi-user.
+### Limitations and known risks
 
-Behaviors worth knowing before a demo: the session is in memory, so a restart clears it; extraction takes ~30–60s and chat turns ~10–60s, both live model calls; re-uploading the same plan can produce a slightly different model; wall paint applies per wall to both faces, so painting a room with an exterior wall changes its outside face too (documented in the operation description so the agent warns the user).
+- **Regional bias.** The parser is trained on Finnish plans, so accuracy degrades on other drawing conventions. Client-style plans need testing early; the production fix is retraining on client-domain data.
+- **Geometry scope.** Single-storey, orthogonal walls only — curved and diagonal walls and multi-storey buildings are out of scope.
+- **Scale is load-bearing.** No IFC without a resolved scale. The UX handles this gracefully by parking and asking, but *fully automatic* conversion depends on the VLM scale reader finding a readable annotation.
+- **Revit acceptance is unproven.** Revit is stricter than IFC viewers — wall joins and opening booleans are the classic failures. Output is validated continuously in viewers, but Revit import needs its own pass before any client commitment.
+- **No formal accuracy metrics yet.** The planned side-by-side — percentage of walls and openings recovered, dimensional error, measured against a commercial service as benchmark — hasn't been executed. Quality evidence so far is *visual*: overlay alignment plus VLM QA reports on the hero plans. This is the largest evidentiary gap and it is stated as such.
+- **Costs are placeholders.** The estimate feature demonstrates the mechanism, not real pricing.
 
-**Next, ordered by value-to-effort:** make the eval script a regression gate for prompt changes; attack opening-placement variance directly (extract twice and reconcile, or add a self-check pass); second storey and stairs; broaden the sample set.
+### Commercial context, and the honest build-vs-buy question
+
+| Product | Pricing | Output | Notes |
+| --- | --- | --- | --- |
+| Plans2BIM (WiseBIM) | €15 / plan | IFC + DXF | 10 s – 3 min per plan |
+| MakeaBIM | €0.10 / BIM object | IFC | API on Enterprise tier |
+
+These set the bar: roughly **50% modeling-time reduction with mandatory human cleanup**. The build-vs-buy question is genuine — if a commercial service clears the accuracy bar on *our clients'* plans, then buying the conversion step and building the experience layer on top is a legitimate strategy. What this PoC uniquely demonstrates is that experience layer, plus full control of the pipeline.
+
+### Production roadmap
+
+1. **Replace the parser** — retrain an MIT-licensed architecture on client-style plans; multi-model fusion later.
+2. **Confidentiality path** — local or self-hosted VLM behind the existing adapter seam; the Bedrock path already works today.
+3. **Accuracy evaluation** — execute the deferred metrics table on client plans, including the commercial-service benchmark and a Revit acceptance pass.
+4. **Feature backlog** — construction sheets, prompt-started designs, real cost data for takeoff, multi-storey and non-Manhattan support.
+5. **Hardening** — Python suite into CI, self-hosted Fragments worker, single-parse optimization.
 
 ---
 
 ## 🛠 Technical Stack
 
 - **Retrieval:** Amazon OpenSearch (hybrid BM25 + k-NN, FAISS HNSW, int8/binary quantization, `on_disk` mode), Cohere Embed v4 + Rerank 3.5 on Bedrock, S3, Gemini Flash 2.5 vision, Docling / Surya / Textract for layout + OCR.
-- **BIM agent:** Python 3.12, FastAPI, Uvicorn, IfcOpenShell 0.8.5, Pydantic v2, `anthropic[bedrock]` structured output + streaming, Amazon Bedrock application inference profiles.
-- **Frontend:** React 19, TypeScript, Vite 8, ThatOpen Components / web-ifc / three.js.
-- **Evaluation:** golden-set retrieval harness (Recall@k / nDCG / MRR), LLM-as-judge groundedness rubrics, extraction-overlay eval reports, 136-test seam-based backend suite.
+- **CV geometry engine:** Python 3.11, PyTorch, OpenCV, scikit-image, Shapely, IfcOpenShell (IFC4), FastAPI with SSE.
+- **VLM semantic layer:** Claude (`claude-opus-5`) via first-party API or AWS Bedrock inference profile, structured output with Pydantic schemas, behind a swappable client adapter.
+- **Viewer & demo:** TypeScript pnpm monorepo, Fastify, ThatOpen Fragments, web-ifc, three.js, React, Vite.
+- **Evaluation & tests:** golden-set retrieval harness (Recall@k / nDCG / MRR), LLM-as-judge groundedness rubrics, VLM QA overlay reports, 356 hermetic Python tests, 12 Playwright e2e specs, executable invariants doc.
 
 ---
 
 ## Lessons I took away
 
 - **Lossy preprocessing is invisible in the logs and fatal in the results.** A caption pipeline looks healthy end to end — documents ingested, vectors written, answers returned. Nothing surfaces the fact that the information needed to answer the question was destroyed at step two. You find it by measuring retrieval on a visual-only query slice, or you don't find it at all.
-- **Don't let the model produce the artifact.** Both workstreams put a validated schema between the model and the output — a Plan Model in one, a retrieval unit with provenance in the other. Constrained generation plus deterministic post-processing beats a bigger prompt, and it's the difference between geometry that looks hand-wobbled and geometry that snaps to the exact module.
-- **Pick the architecture that fits the operations budget, not the one that wins the benchmark.** Late interaction is genuinely better at retrieval and genuinely wrong at 1M pages on one team's existing cluster. Naming that tradeoff explicitly — with the storage arithmetic and the threshold that would reverse the decision — is more useful than picking the leader off a leaderboard.
-- **Instrument before you migrate.** The eval harness is the cheapest stage and the one most often skipped. Without a baseline you can neither justify the change nor tell whether it worked.
-- **Publish the weak axis.** The BIM PoC's most valuable output isn't the house that appears in a minute — it's the measured ±20% opening jitter and the one hallucinated door, because that's what tells a stakeholder what to fix next. A feasibility PoC that reports only its successes hasn't tested anything.
+- **Don't let a language model produce geometry.** Asking a VLM for coordinates gave 5–15% error, hallucinated walls, and broken topology, so that approach was rejected permanently rather than tuned. The durable split is judgment to the model, arithmetic to deterministic code — and it holds even in the interactive path, where the agent picks a named operation and Shapely computes the result.
+- **An invariant nothing checks is just a comment.** Pairing every golden rule with the specific test or grep that enforces it is what kept "the VLM never touches geometry" true as the system grew a chat interface, an edit loop, and an enrichment stage.
+- **Pick the architecture that fits the operations budget, not the one that wins the benchmark.** Late interaction is genuinely better at retrieval and genuinely wrong at 1M pages on one team's existing cluster. Naming that tradeoff explicitly — with the storage arithmetic and the threshold that would reverse the decision — beats picking the leader off a leaderboard.
+- **Licensing is architecture.** A CC BY-NC parser makes an otherwise-working pipeline unshippable. Finding that in week one and designing the swap boundary around it is cheap; finding it during commercialization is not.
+- **Publish what isn't proven.** The most useful lines in the PoC write-up are the ones admitting no formal accuracy metrics yet, unvalidated Revit import, placeholder costs, and a test suite still outside CI. That list is what a stakeholder actually needs in order to decide what to fund next.

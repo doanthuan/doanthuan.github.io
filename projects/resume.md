@@ -17,9 +17,9 @@ AI Engineer with 10+ years of software engineering experience, including 5 years
 - Supported solving AI problems across projects within the company.
 - Conducted technical sharing, mentored junior engineers, and supported AI hiring and interviews.
 
-**Blueprint Knowledge & 3D Representation** | *Cohere Embed v4, Amazon OpenSearch, Bedrock, Gemini, IfcOpenShell, FastAPI, Pydantic, React*
+**Blueprint Knowledge & 3D Representation** | *Cohere Embed v4, Amazon OpenSearch, Bedrock, PyTorch, OpenCV, Shapely, IfcOpenShell, FastAPI, React/three.js*
 - Re-architected multimodal retrieval over 1M+ scanned drawings, replacing a lossy VLM-caption + text-embedding pipeline with true multimodal embeddings, hybrid BM25 + k-NN search in OpenSearch, cross-encoder reranking, and page images injected at generation time; selected single-vector embeddings over ColPali-style late interaction to hold index RAM at ~4.6 GB instead of 180–520 GB.
-- Built a vision-language agent converting raster Japanese residential floor plans into valid IFC/BIM models in ~1 minute, constraining the model to emit a validated Pydantic schema rather than raw geometry and snapping coordinates to the 455mm module for exact dimensions, with 18 bounded operations powering bilingual chat-based refinement and quality measured by a built-in extraction eval harness.
+- Built a floor-plan-to-BIM converter on a hybrid architecture — a deterministic CV engine owning all geometry (segmentation → vectorization → Shapely → IFC4 via IfcOpenShell) with an LLM restricted to room labels, opening types, and QA review — after measuring 5–15% coordinate error from VLM-extracted geometry; shipped an agent UX with SSE-narrated conversion, approval-gated natural-language edits, and LLM-free quantity takeoff, backed by 356 hermetic tests.
 
 **TriangleHealth** | *Apache Airflow, TxGemma, GraphRAG, Neo4j, Google ADK, MCP, vLLM*
 - Built scalable Airflow pipelines processing 10M+ biomedical entities to construct a Neo4j knowledge graph powering medical research workflows.
