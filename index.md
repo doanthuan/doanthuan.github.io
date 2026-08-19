@@ -42,6 +42,8 @@ table {
 
 - **[LayerProof](/projects/layer)** — Multi-agent AI platform that turns a prompt and reference assets into social-media campaigns, slide decks, and more, powered by an event-sourced durable workflow engine and a canvas-based image generation pipeline.
 
+- **[Visual Document AI](/projects/visual-doc-ai)** — Multimodal RAG over scanned, chart-heavy corpora at 1M+ page scale, plus a VLM agent that converts Japanese floor plans into correctable IFC/BIM models.
+
 - **[QAMobileAgent](/projects/uiagent)** — Hybrid GUI testing agent for banking apps using GUI-Owl-7B vision-language model with deterministic Appium execution.
 
 - **[FinGPT](/projects/backbase)** — Multi-agent conversational banking chatbot with RAG and tool-use for secure, context-aware retail banking interactions.
