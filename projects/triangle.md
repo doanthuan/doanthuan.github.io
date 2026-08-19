@@ -90,7 +90,7 @@ The reasoning layer is built around a **Medical Deep Research orchestrator agent
 - Self-hosting was deliberate: clinical queries stay in-infrastructure, high-volume specialist calls stay economical, and pinned weights keep evals reproducible
 - Clinical interpretation aligned with disease phenotype and mutation profile, with mechanistic evaluation and explicit citations
 
-Agents share state through an orchestrator-managed scratchpad keyed by subtask — subagents see their task, relevant prior findings, and their tools, not each other's full context — and retrieved-document IDs are tracked so no agent re-processes a paper another already found. **Google ADK** provides the agent scaffolding and **MCP** the tool interface layer, so the KG query interface, TDC tools, and web search all present the same shape to agents and new tools don't require touching agent code.
+Agents share state through an orchestrator-managed scratchpad keyed by subtask — subagents see their task, relevant prior findings, and their tools, not each other's full context — and retrieved-document IDs are tracked so no agent re-processes a paper another already found. **LangChain** provides the agent scaffolding and **MCP** the tool interface layer, so the KG query interface, TDC tools, and web search all present the same shape to agents and new tools don't require touching agent code.
 
 ![MedicalResearchAgent](/assets/triangle/medical_research_agent.png)
 
@@ -149,7 +149,7 @@ None of this eliminates hallucination — but it reduces it and, critically, mak
 - Apache Airflow, Neo4j, knowledge graph.
 - GraphRAG, hybrid search, cross-encoder reranking.
 - Deep‑research agents, Tx‑Gemma, BioMni, vLLM.
-- Google ADK, MCP.
+- LangChain, MCP.
 
 ---
 
