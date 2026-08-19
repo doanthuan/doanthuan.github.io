@@ -1,12 +1,12 @@
 ---
 layout: page
-title: Visual Document AI — Multimodal Retrieval & Drawing-to-BIM
-permalink: /projects/visual-doc-ai/
+title: Blueprint Knowledge and 3D Representation
+permalink: /projects/blueprint-knowledge-3d/
 ---
 
-# 📐 Visual Document AI
+# 📐 Blueprint Knowledge and 3D Representation
 
-### Multimodal retrieval over scanned corpora, and a VLM agent that turns floor plans into BIM
+### Multimodal retrieval over scanned drawings, and a VLM agent that turns floor plans into IFC/BIM
 
 **Date:** 2026
 
@@ -20,8 +20,8 @@ A chart encodes dozens of quantitative relationships. A floor plan encodes topol
 
 | Workstream | Status | What it is |
 | --- | --- | --- |
-| **1. Multimodal RAG for visually-dense corpora** | Architecture diagnosis + design proposal, with staged rollout and eval plan | Replacing a caption-and-index pipeline with true multimodal embeddings at 1M+ page scale on OpenSearch/Bedrock |
-| **2. Floor plan → BIM VLM agent** | Built PoC, quality measured rather than asserted | Raster 間取り図 → real IFC model, refined by bilingual chat, opens in Revit |
+| **1. Blueprint knowledge** | Architecture diagnosis + design proposal, with staged rollout and eval plan | Replacing a caption-and-index pipeline with true multimodal embeddings at 1M+ page scale on OpenSearch/Bedrock |
+| **2. 3D representation** | Built PoC, quality measured rather than asserted | Raster 間取り図 → real IFC model, refined by bilingual chat, opens in Revit |
 
 Three convictions run through both:
 
@@ -31,7 +31,7 @@ Three convictions run through both:
 
 ---
 
-## Part 1 — Multimodal RAG for Visually-Dense Documents
+## Part 1 — Blueprint Knowledge: Multimodal RAG for Visually-Dense Documents
 
 ### The diagnosis
 
@@ -129,7 +129,7 @@ Being the person who flags this is part of the deliverable:
 
 ---
 
-## Part 2 — Floor Plan → BIM: a VLM Agent with Deterministic Guardrails
+## Part 2 — 3D Representation: Floor Plan → BIM with a VLM Agent
 
 ### The question, and the honest answer
 
