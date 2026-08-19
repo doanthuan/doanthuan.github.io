@@ -73,11 +73,12 @@ This module supports clinical trial matching, mutation–treatment alignment, an
 
 ### 3. Multi-Agent Scientific Research and Ranking
 ![AgentResearchRanking](/assets/triangle/agent_research_ranking.png)
-The reasoning layer is built around a **Medical Deep Research orchestrator agent** that plans the investigation, delegates to specialized subagents, and synthesizes their findings. Multi-agent earned its complexity here for concrete reasons: heterogeneous tool sets per subagent, parallel execution of independent subtasks, clean per-agent context isolation, and independent verification — two agents reaching a conclusion via different evidence paths is stronger than one asserting it twice.
+The reasoning layer is built around a **Medical Deep Research orchestrator agent** that plans the investigation, delegates to specialized subagents, and synthesizes their findings — running as a durable **Temporal** workflow so a multi-minute, multi-step investigation survives a worker crash or deploy and resumes without re-running completed work. Multi-agent earned its complexity here for concrete reasons: heterogeneous tool sets per subagent, parallel execution of independent subtasks, clean per-agent context isolation, and independent verification — two agents reaching a conclusion via different evidence paths is stronger than one asserting it twice.
 
 #### 🧭 Orchestrator: Medical Deep Research Agent
 - Decomposes a clinical question into typed subtasks with declared dependencies, so independent branches run in parallel
 - **Validates plans before execution** (schema checks, subtask bounds, entity-resolvability checks) and **replans** — bounded to prevent loops — when subagents return low-confidence or contradictory results
+- Each subagent invocation and tool call runs as a **Temporal activity** with automatic retry and exponential backoff, so a transient LLM or tool failure retries in place — with the workflow's accumulated state intact — instead of restarting the whole investigation
 - Routes simple factual lookups to a fast retrieval-plus-synthesis path; only genuine research questions get the full pipeline
 - The plan itself is part of the audit trail
 
@@ -90,7 +91,7 @@ The reasoning layer is built around a **Medical Deep Research orchestrator agent
 - Self-hosting was deliberate: clinical queries stay in-infrastructure, high-volume specialist calls stay economical, and pinned weights keep evals reproducible
 - Clinical interpretation aligned with disease phenotype and mutation profile, with mechanistic evaluation and explicit citations
 
-Agents share state through an orchestrator-managed scratchpad keyed by subtask — subagents see their task, relevant prior findings, and their tools, not each other's full context — and retrieved-document IDs are tracked so no agent re-processes a paper another already found. **LangChain** provides the agent scaffolding and **MCP** the tool interface layer, so the KG query interface, TDC tools, and web search all present the same shape to agents and new tools don't require touching agent code.
+Agents share state through an orchestrator-managed scratchpad keyed by subtask, persisted as durable **Temporal** workflow state — subagents see their task, relevant prior findings, and their tools, not each other's full context — and retrieved-document IDs are tracked so no agent re-processes a paper another already found. **LangChain** provides the agent scaffolding and **MCP** the tool interface layer, so the KG query interface, TDC tools, and web search all present the same shape to agents and new tools don't require touching agent code.
 
 ![MedicalResearchAgent](/assets/triangle/medical_research_agent.png)
 
@@ -128,8 +129,9 @@ None of this eliminates hallucination — but it reduces it and, critically, mak
 
 ## ⚙️ Engineering & Serving
 
-- **FastAPI** async API layer; long research runs are submitted as jobs (enqueue to Celery, return a job ID) with results streamed back over SSE as agents complete — the plan shows immediately, then findings land progressively
-- **Celery queues separated by workload class** (ingestion, extraction, agent execution) so batch backlogs never starve interactive queries
+- **FastAPI** async API layer; a research request starts a durable **Temporal** workflow and FastAPI returns a workflow ID immediately, with results streamed back over SSE as the workflow progresses — the plan shows immediately, then findings land progressively
+- **Celery queues separated by workload class** (ingestion, extraction) fan out the embarrassingly-parallel document pipeline so a batch ingestion backlog never starves interactive queries; **Temporal** owns agent execution specifically, where durability and per-step retry matter more than raw fan-out throughput
+- **Durable, resumable agent runs** — Temporal workflow state survives worker crashes and deploys, so a multi-minute research run doesn't restart from zero; automatic retries with backoff absorb transient LLM and tool failures at the step level; and the replayable workflow history is a second audit trail alongside the KG's provenance model
 - **Cost control** via model tiering (small models for routing and extraction, frontier models only for planning and synthesis), self-hosted specialist inference, document-hash caching of extraction, KG-version-aware result caching, and per-request token ceilings that bound the blast radius of a pathological agent loop
 - **Latency by query class** — simple lookups answer in seconds on the fast path; a clinician researching treatment options gets a thorough multi-minute research run with visible progress, which beats a five-second shallow answer
 
@@ -145,7 +147,7 @@ None of this eliminates hallucination — but it reduces it and, critically, mak
 ---
 
 ## 🛠 Technical Stack
-- Python, FastAPI, Celery.
+- Python, FastAPI, Celery, Temporal.
 - Apache Airflow, Neo4j, knowledge graph.
 - GraphRAG, hybrid search, cross-encoder reranking.
 - Deep‑research agents, Tx‑Gemma, BioMni, vLLM.
